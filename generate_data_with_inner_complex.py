@@ -80,7 +80,9 @@ def generate_sentence(depth):
     """
     main_action = random.choice(actions)
     clause = generate_inner(depth)
-    return f"{clause} {main_action}."
+    # lower-case all content then capitalize only the first character
+    sentence = f"{clause} {main_action}."
+    return sentence.lower().capitalize()
 
 # Decide number of sentences per depth
 depths = [0,1,2,3,4,5]
@@ -101,3 +103,7 @@ df = df.sample(frac=1, random_state=42).reset_index(drop=True)
 # Save CSV
 df.to_csv("synthetic_sentences_recursive_depths.csv", index=False)
 print("Generated ~200 deeply nested sentences and saved to 'synthetic_sentences_recursive_depths.csv'")
+
+
+
+

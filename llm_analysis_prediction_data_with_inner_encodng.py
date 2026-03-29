@@ -22,15 +22,7 @@ def compute_surprisal(sentence):
     Computes token-level surprisal and sentence-level perplexity.
     Returns: average token surprisal (bits) and perplexity.
     """
-    # tokens = tokenizer.encode(sentence, return_tensors="pt").to(device)
-    # with torch.no_grad():
-    #     outputs = model(tokens, labels=tokens)
-    #     loss = outputs.loss.item()  # average negative log likelihood over tokens
-    #     perplexity = torch.exp(torch.tensor(loss)).item()
-    #     # Token-level surprisal in bits
-    #     surprisal_bits = loss * np.log2(np.e)  # convert nats to bits
-    # return surprisal_bits, perplexity
-    
+
 
 
     inputs = tokenizer(sentence, return_tensors="pt").to(device)
@@ -134,3 +126,13 @@ hardest = df.sort_values('surprisal', ascending=False).head(10)
 print("Top 10 hardest sentences for GPT-2:\n")
 for i, row in hardest.iterrows():
     print(f"Depth {row['depth']}, Surprisal {row['surprisal']:.2f} bits: {row['sentence']}\n")
+    
+    
+    
+#     Main verb surprisal vs depth 
+# Maximum token surprisal vs depth
+# Entropy vs depth
+# Attention distance vs depth
+
+
+# Sentence perplexity does not always increase with embedding depth because additional tokens may be structurally predictable. However, token-level surprisal of structurally critical words (like the main verb) better reflects processing difficulty.
