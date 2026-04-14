@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LLM vs Human Analysis</title>
+
+<style>
+    body {
+        margin: 0;
+        font-family: 'Segoe UI', sans-serif;
+        background: #f4f6f9;
+    }
+
+    /* NAV */
+    nav {
+        position: sticky;
+        top: 0;
+        background: #111827;
+        padding: 15px;
+        text-align: center;
+        z-index: 100; /* Ensures nav stays above zoomed images */
+    }
+
+    nav a {
+        color: white;
+        margin: 0 12px;
+        text-decoration: none;
+        font-weight: 500;
+        transition: color 0.2s ease;
+    }
+
+    nav a:hover {
+        color: #60a5fa;
+    }
+
+    /* SECTION */
+    .section {
+        margin: 40px auto;
+        width: 92%;
+        max-width: 1400px; /* Added max-width for ultra-wide screens */
+        background: white;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+    }
+
+    .section h2 {
+        margin-bottom: 20px;
+    }
+
+    /* GRID - bigger cards */
+    .grid {
+        display: grid;
+        /* Using min() ensures it never overflows the container width */
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
+        gap: 25px;
+    }
+
+    /* CARD */
+    .card {
+        background: #fafafa;
+        padding: 12px;
+        border-radius: 12px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    }
+
+    /* HOVER EFFECT */
+    .card:hover {
+        transform: translateY(-8px) scale(1.02);
+        box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+    }
+
+    /* IMAGE */
+    img {
+        width: 100%;
+        border-radius: 10px;
+        transition: transform 0.3s ease;
+        display: block; /* Removes bottom spacing on images */
+    }
+
+    /* ZOOM IMAGE INSIDE CARD */
+    .card:hover img {
+        transform: scale(1.05);
+    }
+
+    /* CAPTION */
+    .caption {
+        text-align: center;
+        font-size: 14px;
+        margin-top: 10px;
+        color: #444;
+    }
+
+    /* =========================================
+       RESPONSIVE ADJUSTMENTS 
+       ========================================= */
+    @media (max-width: 768px) {
+        nav {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+            padding: 12px;
+        }
+
+        nav a {
+            margin: 0;
+            font-size: 0.9rem;
+        }
+
+        .section {
+            width: 95%;
+            margin: 20px auto;
+            padding: 20px;
+        }
+
+        .section h2 {
+            font-size: 1.35rem;
+            margin-bottom: 15px;
+        }
+
+        .grid {
+            /* Force single column on smaller screens, reduce gap */
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+
+        .card:hover {
+            /* Tone down the hover translation slightly on touch devices */
+            transform: translateY(-4px) scale(1.01);
+        }
+    }
+</style>
+</head>
+
+<body>
+
+<nav>
+    <a href="#human">Human</a>
+    <a href="#multi">Multi</a>
+    <a href="#dl">LLM DL</a>
+    <a href="#prediction">Prediction</a>
+    <a href="#extra">Extra</a>
+</nav>
+
+<div id="content"></div>
+
+<script>
+const sections = [
+    { id: "human", title: "Human Analysis", folder: "outputs/human_analysis_output", count: 5 },
+    { id: "multi", title: "Multi-Language Analysis", folder: "outputs/human_analysis_multi_laug", count: 8 },
+    { id: "dl", title: "LLM Dependency Length & Tree Depth", folder: "outputs/llm_dl_td", count: 3 },
+    { id: "dl_big", title: "LLM Large Dataset", folder: "outputs/llm_dl_td_bigdataset", count: 3 },
+    { id: "prediction", title: "LLM Prediction Without Embedding", folder: "outputs/llm_prediction_wthout_innerembading", count: 4 },
+    { id: "prediction2", title: "LLM Prediction With Embedding", folder: "outputs/llm_prediction_wth_innerembading", count: 5 },
+    { id: "extra", title: "LLM Advanced Metrics", folder: "outputs/llm_analysis_more_parameters", count: 3 },
+    { id: "caps", title: "Caps Experiment", folder: "outputs/LLM_ANALYSIS_ONLY_FIRSTLETTER_CAPS", count: 4 }
+];
+
+const container = document.getElementById("content");
+
+sections.forEach(sec => {
+    let html = `<div class="section" id="${sec.id}">
+        <h2>${sec.title}</h2>
+        <div class="grid">`;
+
+    for (let i = 1; i <= sec.count; i++) {
+        html += `
+        <div class="card">
+            <img src="${sec.folder}/Figure_${i}.webp"
+                 onerror="this.src='${sec.folder}/Figure_${i}.png'"
+                 alt="${sec.title} - Figure ${i}">
+            <div class="caption">Figure ${i}</div>
+        </div>`;
+    }
+
+    html += `</div></div>`;
+    container.innerHTML += html;
+});
+</script>
+
+</body>
+</html>
