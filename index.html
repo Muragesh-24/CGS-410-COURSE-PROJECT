@@ -1,92 +1,138 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <title>LLM vs Human Analysis</title>
 
+
 <style>
-body {
-    margin: 0;
-    font-family: 'Segoe UI', sans-serif;
-    background: #f4f6f9;
-}
+    body {
+        margin: 0;
+        font-family: 'Segoe UI', sans-serif;
+        background: #f4f6f9;
+    }
 
-/* NAV */
-nav {
-    position: sticky;
-    top: 0;
-    background: #111827;
-    padding: 15px;
-    text-align: center;
-}
+    /* NAV */
+    nav {
+        position: sticky;
+        top: 0;
+        background: #111827;
+        padding: 15px;
+        text-align: center;
+        z-index: 100; /* Ensures nav stays above zoomed images */
+    }
 
-nav a {
-    color: white;
-    margin: 0 12px;
-    text-decoration: none;
-    font-weight: 500;
-}
+    nav a {
+        color: white;
+        margin: 0 12px;
+        text-decoration: none;
+        font-weight: 500;
+        transition: color 0.2s ease;
+    }
 
-nav a:hover {
-    color: #60a5fa;
-}
+    nav a:hover {
+        color: #60a5fa;
+    }
 
-/* SECTION */
-.section {
-    margin: 40px auto;
-    width: 92%;
-    background: white;
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
-}
+    /* SECTION */
+    .section {
+        margin: 40px auto;
+        width: 92%;
+        max-width: 1400px; /* Added max-width for ultra-wide screens */
+        background: white;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+    }
 
-.section h2 {
-    margin-bottom: 20px;
-}
+    .section h2 {
+        margin-bottom: 20px;
+    }
 
-/* GRID - bigger cards */
-.grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
-    gap: 25px;
-}
+    /* GRID - bigger cards */
+    .grid {
+        display: grid;
+        /* Using min() ensures it never overflows the container width */
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
+        gap: 25px;
+    }
 
-/* CARD */
-.card {
-    background: #fafafa;
-    padding: 12px;
-    border-radius: 12px;
-    overflow: hidden;
-    transition: all 0.3s ease;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-}
+    /* CARD */
+    .card {
+        background: #fafafa;
+        padding: 12px;
+        border-radius: 12px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    }
 
-/* HOVER EFFECT */
-.card:hover {
-    transform: translateY(-8px) scale(1.02);
-    box-shadow: 0 15px 35px rgba(0,0,0,0.15);
-}
+    /* HOVER EFFECT */
+    .card:hover {
+        transform: translateY(-8px) scale(1.02);
+        box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+    }
 
-/* IMAGE */
-img {
-    width: 100%;
-    border-radius: 10px;
-    transition: transform 0.3s ease;
-}
+    /* IMAGE */
+    img {
+        width: 100%;
+        border-radius: 10px;
+        transition: transform 0.3s ease;
+        display: block; /* Removes bottom spacing on images */
+    }
 
-/* ZOOM IMAGE INSIDE CARD */
-.card:hover img {
-    transform: scale(1.05);
-}
+    /* ZOOM IMAGE INSIDE CARD */
+    .card:hover img {
+        transform: scale(1.05);
+    }
 
-/* CAPTION */
-.caption {
-    text-align: center;
-    font-size: 14px;
-    margin-top: 10px;
-    color: #444;
-}
+    /* CAPTION */
+    .caption {
+        text-align: center;
+        font-size: 14px;
+        margin-top: 10px;
+        color: #444;
+    }
+
+    /* =========================================
+       RESPONSIVE ADJUSTMENTS 
+       ========================================= */
+    @media (max-width: 768px) {
+        nav {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+            padding: 12px;
+        }
+
+        nav a {
+            margin: 0;
+            font-size: 0.9rem;
+        }
+
+        .section {
+            width: 95%;
+            margin: 20px auto;
+            padding: 20px;
+        }
+
+        .section h2 {
+            font-size: 1.35rem;
+            margin-bottom: 15px;
+        }
+
+        .grid {
+            /* Force single column on smaller screens, reduce gap */
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+
+        .card:hover {
+            /* Tone down the hover translation slightly on touch devices */
+            transform: translateY(-4px) scale(1.01);
+        }
+    }
 </style>
 </head>
 
@@ -175,5 +221,842 @@ sections.forEach(sec => {
 });
 </script>
 
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LLM Thinking Explorer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+        --bg-base: #0f172a;
+        --bg-surface: #1e293b;
+        --bg-surface-hover: #334155;
+        --text-main: #f8fafc;
+        --text-muted: #94a3b8;
+        --primary: #38bdf8;
+        --primary-hover: #0ea5e9;
+        --border: #334155;
+        
+        --success: #10b981;
+        --warning: #f59e0b;
+        --danger: #ef4444;
+        
+        --radius-md: 8px;
+        --radius-lg: 12px;
+        --font-family: 'Inter', system-ui, sans-serif;
+    }
+
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        font-family: var(--font-family);
+        background-color: var(--bg-base);
+        color: var(--text-main);
+        line-height: 1.6;
+        padding: 20px;
+    }
+
+    .container {
+        max-width: 1000px;
+        margin: 40px auto;
+    }
+
+    /* Header */
+    header {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+    h1 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 8px;
+        background: linear-gradient(to right, #38bdf8, #818cf8);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .subtitle {
+        color: var(--text-muted);
+        font-size: 1.1rem;
+    }
+
+    /* Input Area */
+    .input-group {
+        display: flex;
+        gap: 12px;
+        margin-bottom: 24px;
+    }
+
+    input {
+        flex: 1;
+        padding: 14px 20px;
+        font-size: 1rem;
+        background: var(--bg-surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        color: var(--text-main);
+        font-family: var(--font-family);
+        transition: all 0.2s ease;
+    }
+
+    input:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
+    }
+
+    button {
+        padding: 14px 28px;
+        background: var(--primary);
+        color: #0369a1;
+        font-size: 1rem;
+        font-weight: 600;
+        border: none;
+        border-radius: var(--radius-lg);
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    button:hover:not(:disabled) {
+        background: var(--primary-hover);
+        color: #fff;
+    }
+
+    button:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+    }
+
+    #error-message {
+        display: none;
+        background: rgba(239, 68, 68, 0.1);
+        color: var(--danger);
+        padding: 12px 16px;
+        border-radius: var(--radius-md);
+        border: 1px solid rgba(239, 68, 68, 0.2);
+        margin-bottom: 24px;
+        font-size: 0.9rem;
+    }
+
+    /* Sections */
+    .section-container {
+        display: none;
+        flex-direction: column;
+        gap: 24px;
+    }
+
+    .section {
+        background: var(--bg-surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        padding: 24px;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+
+    .section h2 {
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .section p {
+        color: var(--text-muted);
+        font-size: 0.95rem;
+        margin-bottom: 20px;
+    }
+
+    /* Tokens & Surprisal */
+    .tokens-wrapper {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    .token {
+        padding: 8px 16px;
+        background: var(--bg-base);
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        font-weight: 500;
+        font-size: 0.95rem;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+
+    .token.low { border-left: 4px solid var(--success); }
+    .token.medium { border-left: 4px solid var(--warning); }
+    .token.high { border-left: 4px solid var(--danger); }
+
+    .legend {
+        margin-top: 16px;
+        font-size: 0.85rem;
+        color: var(--text-muted);
+        display: flex;
+        flex-wrap: wrap;
+        gap: 16px;
+    }
+
+    .legend span {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        display: inline-block;
+    }
+
+    /* Top K List */
+    .topk-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 16px;
+    }
+
+    .topk-card {
+        background: var(--bg-base);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-md);
+        padding: 16px;
+    }
+
+    .topk-header {
+        font-weight: 700;
+        color: var(--primary);
+        margin-bottom: 12px;
+        border-bottom: 1px solid var(--border);
+        padding-bottom: 8px;
+    }
+
+    .topk-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 8px;
+        font-size: 0.9rem;
+    }
+
+    .topk-word { width: 80px; font-weight: 500; }
+    .topk-bar-container {
+        flex: 1;
+        height: 8px;
+        background: var(--bg-surface-hover);
+        border-radius: 4px;
+        overflow: hidden;
+        margin: 0 10px;
+    }
+    .topk-bar {
+        height: 100%;
+        background: var(--primary);
+        border-radius: 4px;
+    }
+    .topk-prob { width: 45px; text-align: right; color: var(--text-muted); font-size: 0.8rem; }
+
+    /* Attention Matrix */
+    .attention-container {
+        overflow-x: auto;
+        /* Adds smooth scrolling on iOS */
+        -webkit-overflow-scrolling: touch; 
+    }
+
+    table {
+        border-collapse: collapse;
+        width: max-content;
+    }
+
+    th, td {
+        padding: 12px;
+        text-align: center;
+        border: 1px solid var(--border);
+        min-width: 40px;
+        height: 40px;
+        font-size: 0.85rem;
+    }
+
+    th {
+        background: var(--bg-base);
+        font-weight: 600;
+        color: var(--text-muted);
+    }
+
+    td {
+        transition: transform 0.1s;
+    }
+    
+    td:hover {
+        transform: scale(1.1);
+        border-radius: 4px;
+        box-shadow: 0 0 8px rgba(0,0,0,0.5);
+        z-index: 10;
+        position: relative;
+    }
+
+    /* Spinner */
+    .spinner {
+        display: none;
+        width: 16px;
+        height: 16px;
+        border: 2px solid #0369a1;
+        border-bottom-color: transparent;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+    }
+    @keyframes spin { 100% { transform: rotate(360deg); } }
+
+    /* Floating Info Button */
+    #infoBtn {
+        position: fixed;
+        top: 24px;
+        right: 24px;
+        background: var(--bg-surface);
+        color: var(--text-main);
+        border: 1px solid var(--border);
+        padding: 10px 20px;
+        border-radius: 50px;
+        cursor: pointer;
+        font-weight: 600;
+        font-family: var(--font-family);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.2s ease;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        z-index: 100;
+    }
+
+    #infoBtn:hover {
+        border-color: var(--primary);
+        color: var(--primary);
+        transform: translateY(-2px);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Modal Backdrop */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 999;
+        inset: 0;
+        background: rgba(15, 23, 42, 0.7);
+        backdrop-filter: blur(6px);
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        padding: 20px; /* Prevents modal from touching edges on small screens */
+    }
+
+    .modal.show {
+        display: flex;
+        opacity: 1;
+    }
+
+    /* Modal Content Box */
+    .modal-content {
+        background: var(--bg-surface);
+        border: 1px solid var(--border);
+        width: 100%;
+        max-width: 600px;
+        border-radius: var(--radius-lg);
+        padding: 32px;
+        position: relative;
+        transform: translateY(20px);
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        max-height: 85vh;
+        overflow-y: auto;
+    }
+
+    .modal.show .modal-content {
+        transform: translateY(0);
+    }
+
+    /* Close Button */
+    .close {
+        position: absolute;
+        top: 24px;
+        right: 24px;
+        width: 32px;
+        height: 32px;
+        background: var(--bg-base);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        color: var(--text-muted);
+        transition: all 0.2s ease;
+        font-size: 1.5rem;
+        line-height: 1;
+    }
+
+    .close:hover {
+        background: var(--danger);
+        color: white;
+        transform: rotate(90deg);
+    }
+
+    .modal h2 { margin-bottom: 8px; padding-right: 32px; /* Prevent overlap with close btn */ }
+    .modal-subtitle { color: var(--text-muted); margin-bottom: 24px; font-size: 0.95rem; }
+
+    .modal h3 {
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--text-muted);
+        margin: 24px 0 12px 0;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .example {
+        background: var(--bg-base);
+        border: 1px solid var(--border);
+        padding: 14px 16px;
+        margin-bottom: 8px;
+        border-radius: var(--radius-md);
+        cursor: pointer;
+        transition: all 0.2s ease;
+        font-size: 0.95rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .example::after {
+        content: '→';
+        opacity: 0;
+        transform: translateX(-10px);
+        transition: all 0.2s ease;
+        color: var(--primary);
+        font-weight: bold;
+    }
+
+    .example:hover {
+        border-color: var(--primary);
+        background: rgba(56, 189, 248, 0.05);
+        transform: translateX(4px);
+    }
+
+    .example:hover::after {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+    .hint {
+        margin-top: 32px;
+        padding-top: 16px;
+        border-top: 1px solid var(--border);
+        font-size: 0.85rem;
+        color: var(--text-muted);
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+        align-items: center;
+    }
+
+    /* =========================================
+       RESPONSIVE ADJUSTMENTS 
+       ========================================= */
+    @media (max-width: 768px) {
+        body {
+            padding: 16px;
+        }
+
+        .container {
+            margin: 60px auto 20px; /* Added top margin to clear the floating info button */
+        }
+
+        h1 {
+            font-size: 1.8rem; /* Scale down title */
+        }
+
+        .subtitle {
+            font-size: 0.95rem;
+        }
+
+        /* Stack input and button vertically */
+        .input-group {
+            flex-direction: column;
+        }
+
+        button {
+            width: 100%; /* Full width for easier tapping */
+        }
+
+        /* Adjust floating info button to not obscure the header */
+        #infoBtn {
+            top: 16px;
+            right: 16px;
+            padding: 8px 16px;
+            font-size: 0.9rem;
+        }
+
+        /* Make modal fit better on mobile screens */
+        .modal-content {
+            padding: 24px 16px; 
+        }
+
+        .close {
+            top: 16px;
+            right: 16px;
+        }
+
+        /* Allow top-k grid to become a single column if needed */
+        .topk-grid {
+            grid-template-columns: 1fr;
+        }
+
+        /* Reduce padding inside sections to save horizontal space */
+        .section {
+            padding: 16px;
+        }
+
+        .tokens-wrapper {
+            gap: 8px;
+        }
+
+        .token {
+            padding: 6px 12px;
+            font-size: 0.85rem;
+        }
+
+        /* Matrix table cells */
+        th, td {
+            padding: 8px;
+            font-size: 0.75rem;
+            min-width: 30px;
+            height: 30px;
+        }
+    }
+</style>
+</head>
+<body>
+
+<main class="container">
+    <header>
+        
+        <!-- <button id="infoBtn" onclick="openModal()">
+    <span style="font-size: 1.2rem;">💡</span> Try Examples
+</button> -->
+<button class="btn" onclick="window.location.href='outputs.html'">
+    View Outputs <span>→</span>
+</button>
+
+<div id="modal" class="modal" onclick="closeModalOutside(event)">
+    <div class="modal-content">
+        <div class="close" onclick="closeModal()">×</div>
+
+        <h2>🧠 Try These Examples</h2>
+        <p class="modal-subtitle">Click any sentence to load it into the analyzer.</p>
+
+        <h3><span class="dot" style="background: var(--success)"></span> Simple</h3>
+        <div class="example" onclick="fill(this)">The dog is barking</div>
+        <div class="example" onclick="fill(this)">The cat is sleeping</div>
+
+        <h3><span class="dot" style="background: var(--warning)"></span> Longer Sentences</h3>
+        <div class="example" onclick="fill(this)">The dog near the house is barking</div>
+        <div class="example" onclick="fill(this)">The dog near the house on the street is barking</div>
+
+        <h3><span class="dot" style="background: var(--danger)"></span> Complex (Important)</h3>
+        <div class="example" onclick="fill(this)">The dog that the cat chased is barking</div>
+        <div class="example" onclick="fill(this)">The dog that the cat that the boy saw chased is barking</div>
+        
+        <h3>🎯 Ambiguous</h3>
+        <div class="example" onclick="fill(this)">The man saw the boy with the telescope</div>
+        <div class="example" onclick="fill(this)">The girl told the boy that she liked him</div>
+
+        <h3>⚡ Surprisal Demo</h3>
+        <div class="example" onclick="fill(this)">The pizza was too hot to eat</div>
+        <div class="example" onclick="fill(this)">The pizza was too hot to cry</div>
+
+        <p class="hint">
+            <span class="dot" style="background: var(--success)"></span> Easy | 
+            <span class="dot" style="background: var(--warning)"></span> Medium | 
+            <span class="dot" style="background: var(--danger)"></span> Hard
+        </p>
+    </div>
+</div>
+
+        <h1>🤖 LLM Thinking Explorer</h1>
+        <div class="subtitle">A visual explanation of how AI predicts and understands language</div>
+    </header>
+
+    <div class="input-group">
+        <input type="text" id="text-input" value="The dog that the cat chased is barking" placeholder="Enter a sentence to analyze...">
+        <button id="analyze-btn" onclick="runAnalysis()">
+            <span class="spinner" id="spinner"></span>
+            <span id="btn-text">Analyze</span>
+        </button>
+    </div>
+
+    <div id="error-message"></div>
+
+    <div id="results-container" class="section-container">
+        <section class="section">
+            <h2>🔍 Step 1: Tokenization</h2>
+            <p>The model breaks the input text into smaller structural units called tokens.</p>
+            <div id="tokens" class="tokens-wrapper"></div>
+        </section>
+
+        <section class="section">
+            <h2>⚡ Step 2: Prediction Difficulty (Surprisal)</h2>
+            <p>Analyzes how "surprising" or difficult it was for the model to predict each token based on the previous context.</p>
+            <div id="surprisal" class="tokens-wrapper"></div>
+            <div class="legend">
+                <span><i class="dot" style="background: var(--success)"></i> Low (Expected)</span>
+                <span><i class="dot" style="background: var(--warning)"></i> Medium</span>
+                <span><i class="dot" style="background: var(--danger)"></i> High (Surprising)</span>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>🎯 Step 3: Next-Token Probabilities (Top-K)</h2>
+            <p>For each position, the model calculates the probability of various words coming next. Here are its top choices.</p>
+            <div id="topk" class="topk-grid"></div>
+        </section>
+
+        <section class="section">
+            <h2>🧠 Step 4: Attention Mechanism</h2>
+            <p>Visualizes which previous words the model focused on while processing the current word. Darker blue indicates stronger attention.</p>
+            <div class="attention-container">
+                <table id="attention"></table>
+            </div>
+        </section>
+    </div>
+</main>
+
+<script>
+    // Utility to determine styling based on surprisal score
+    const getSurprisalClass = (score) => {
+        if (score < 1.0) return "low";
+        if (score < 2.5) return "medium";
+        return "high";
+    };
+
+    // Formatter for probabilities (e.g., 0.854 -> 85%)
+    const formatProb = (prob) => `${(prob * 100).toFixed(1)}%`;
+
+    async function runAnalysis() {
+        const textInput = document.getElementById("text-input").value.trim();
+        const btn = document.getElementById("analyze-btn");
+        const btnText = document.getElementById("btn-text");
+        const spinner = document.getElementById("spinner");
+        const errorMsg = document.getElementById("error-message");
+        const resultsContainer = document.getElementById("results-container");
+
+        if (!textInput) return;
+
+        // UI Loading State
+        btn.disabled = true;
+        btnText.textContent = "Analyzing...";
+        spinner.style.display = "block";
+        errorMsg.style.display = "none";
+        resultsContainer.style.display = "none";
+
+        try {
+            // Attempt real fetch
+            const res = await fetch("http://13.48.78.234:5000/analyze", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ text: textInput })
+            });
+
+            if (!res.ok) throw new Error("Server responded with an error");
+            const data = await res.json();
+            renderAll(data);
+
+        } catch (error) {
+            console.warn("Backend unavailable. Falling back to mock data generation for demonstration.");
+            // Professional touch: Show mock data if server isn't running so UI doesn't look broken
+            const mockData = generateMockData(textInput);
+            renderAll(mockData);
+            
+            errorMsg.textContent = "Note: Could not connect to local backend. Displaying generated mock data for demonstration purposes.";
+            errorMsg.style.display = "block";
+        } finally {
+            // Reset UI Loading State
+            btn.disabled = false;
+            btnText.textContent = "Analyze";
+            spinner.style.display = "none";
+            resultsContainer.style.display = "flex";
+        }
+    }
+
+    function renderAll(data) {
+        renderTokens(data.tokens);
+        renderSurprisal(data.analysis);
+        renderTopK(data.analysis);
+        renderAttention(data.tokens, data.attention);
+    }
+
+    function renderTokens(tokens) {
+        const container = document.getElementById("tokens");
+        container.innerHTML = "";
+        tokens.forEach(t => {
+            const span = document.createElement("span");
+            span.className = "token";
+            span.textContent = t;
+            container.appendChild(span);
+        });
+    }
+
+    function renderSurprisal(analysis) {
+        const container = document.getElementById("surprisal");
+        container.innerHTML = "";
+        analysis.forEach(item => {
+            const span = document.createElement("span");
+            const diffClass = getSurprisalClass(item.surprisal);
+            span.className = `token ${diffClass}`;
+            span.textContent = `${item.token} (${item.surprisal.toFixed(2)})`;
+            span.title = `Surprisal Score: ${item.surprisal.toFixed(2)}`;
+            container.appendChild(span);
+        });
+    }
+
+    function renderTopK(analysis) {
+        const container = document.getElementById("topk");
+        container.innerHTML = "";
+        
+        analysis.forEach(item => {
+            const card = document.createElement("div");
+            card.className = "topk-card";
+            
+            let html = `<div class="topk-header">${item.token}</div>`;
+            
+            item.topk.forEach(cand => {
+                html += `
+                    <div class="topk-item">
+                        <span class="topk-word">${cand.token}</span>
+                        <div class="topk-bar-container">
+                            <div class="topk-bar" style="width: ${cand.prob * 100}%"></div>
+                        </div>
+                        <span class="topk-prob">${formatProb(cand.prob)}</span>
+                    </div>
+                `;
+            });
+            
+            card.innerHTML = html;
+            container.appendChild(card);
+        });
+    }
+
+    function renderAttention(tokens, matrix) {
+        const table = document.getElementById("attention");
+        table.innerHTML = "";
+
+        // Header Row
+        const thead = document.createElement("tr");
+        thead.appendChild(document.createElement("th")); // empty top-left cell
+        tokens.forEach(t => {
+            const th = document.createElement("th");
+            th.textContent = t;
+            thead.appendChild(th);
+        });
+        table.appendChild(thead);
+
+        // Matrix Rows
+        matrix.forEach((row, i) => {
+            const tr = document.createElement("tr");
+            
+            const rowHeader = document.createElement("th");
+            rowHeader.textContent = tokens[i];
+            tr.appendChild(rowHeader);
+
+            row.forEach(val => {
+                const td = document.createElement("td");
+                // Using a primary blue color with varying opacity based on attention weight
+                td.style.backgroundColor = `rgba(56, 189, 248, ${val})`;
+                td.title = `Attention weight: ${val.toFixed(2)}`;
+                tr.appendChild(td);
+            });
+            table.appendChild(tr);
+        });
+    }
+
+    // --- MOCK DATA GENERATOR (For resilience/demo if backend is off) ---
+    function generateMockData(text) {
+        const tokens = text.match(/\S+|\s/g).filter(t => t.trim().length > 0);
+        const analysis = tokens.map(token => {
+            const surprisal = Math.random() * 3.5; // 0 to 3.5
+            return {
+                token: token,
+                surprisal: surprisal,
+                topk: [
+                    { token: token, prob: Math.random() * 0.5 + 0.4 },
+                    { token: "wordA", prob: Math.random() * 0.2 + 0.1 },
+                    { token: "wordB", prob: Math.random() * 0.1 }
+                ].sort((a, b) => b.prob - a.prob)
+            };
+        });
+
+        // Generate lower-triangular matrix for causal attention mock
+        const attention = tokens.map((_, i) => {
+            return tokens.map((_, j) => {
+                if (j > i) return 0; // Can't attend to future tokens
+                if (j === i) return Math.random() * 0.5 + 0.5; // High attention to self
+                return Math.random() * (1 / (i - j + 1)); // Decaying attention to past
+            });
+        });
+
+        return { tokens, analysis, attention };
+    }
+// Open Modal
+function openModal() {
+    const modal = document.getElementById("modal");
+    modal.style.display = "flex";
+    // Slight delay to allow display:flex to apply before adding opacity class for animation
+    setTimeout(() => {
+        modal.classList.add("show");
+    }, 10);
+}
+
+// Close Modal
+function closeModal() {
+    const modal = document.getElementById("modal");
+    modal.classList.remove("show");
+    // Wait for the fade-out animation to finish before hiding the element
+    setTimeout(() => {
+        modal.style.display = "none";
+    }, 300);
+}
+
+// Close when clicking outside the modal box
+function closeModalOutside(event) {
+    if (event.target.id === "modal") {
+        closeModal();
+    }
+}
+
+// Fill input and automatically run analysis
+function fill(element) {
+    const input = document.getElementById("text-input");
+    input.value = element.innerText;
+    closeModal();
+    
+    // Automatically trigger the analysis click so the user doesn't have to click twice
+    document.getElementById("analyze-btn").click();
+}
+</script>
 </body>
 </html>
