@@ -1,3 +1,55 @@
+
+## 📁 Project Structure
+
+```text
+CGS-410-COURSE-PROJECT/
+│
+├── data/                          # All datasets used in the project
+│   ├── AIGTxt_dataset.csv
+│   ├── de_hdt-ud-dev.conllu
+│   ├── en_ewt-ud-dev.conllu.txt
+│   ├── es_ancora-ud-test.conllu
+│   ├── fr_gsd-ud-dev.conllu
+│   ├── hi_hdtb-ud-dev.conllu
+│   ├── mr_ufal-ud-train.conllu
+│   ├── llm_generated.txt
+│   ├── synthetic_sentences_depths.csv
+│   ├── synthetic_sentences_inner_depths.csv
+│   └── synthetic_sentences_recursive_depths.csv
+│
+├── interactive_llm_visualization_website/   # Web interface for interactive analysis
+│   └── backend/
+│       ├── main.py               # Backend server logic (API handling, processing)
+│       └── req.txt               # Backend dependencies
+│
+├── outputs/                      # All generated results and visualizations
+│   ├── human_analysis_output/
+│   ├── human_analysis_multi_laug/
+│   ├── llm_analysis_more_parameters/
+│   ├── LLM_ANALYSIS_ONLY_FIRSTLETTER_CAPS/
+│   ├── llm_dl_td/
+│   ├── llm_dl_td_bigdataset/
+│   ├── llm_prediction_wthout_innerembading/
+│   └── llm_prediction_wth_innerembading/
+│
+├── index.html                   # Main UI entry (visualization frontend)
+├── outputs.html                 # Displays generated results
+│
+├── generate_data_without_complex.py
+├── generate_data_with_inner_complex.py
+├── human_analysis.py
+├── human_analysis_multi_laug.py
+├── llm_analysis_DL_and_TH.py
+├── llm_analysis_prediction_data_without_inner_encoding.py
+├── llm_analysis_prediction_data_with_inner_encodng.py
+├── llm_analysis_with_more_parameters.py
+│
+├── README.md                    # Detailed project explanation
+├── LICENSE
+├── CNAME                        # ignore it
+├── doc.txt                      # ignore it
+└── req.txt                      # Project dependencies
+```
 <h1>From Structure to Prediction: Memory Constraints and Dependency Length in Human Language and LLMs</h1>
 
 <h2>Project Overview</h2>
