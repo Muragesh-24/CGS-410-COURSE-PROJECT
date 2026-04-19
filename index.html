@@ -3,134 +3,1191 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        :root {
-            --primary-color: #6366f1;
-            --bg-color: #f8fafc;
-            --text-main: #1e293b;
-            --text-muted: #64748b;
-        }
+    <title>LLM Thinking Explorer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+        --bg-base: #0f172a;
+        --bg-surface: #1e293b;
+        --bg-surface-hover: #334155;
+        --text-main: #f8fafc;
+        --text-muted: #94a3b8;
+        --primary: #38bdf8;
+        --primary-hover: #0ea5e9;
+        --border: #334155;
+        
+        --success: #10b981;
+        --warning: #f59e0b;
+        --danger: #ef4444;
+        
+        --radius-md: 8px;
+        --radius-lg: 12px;
+        --font-family: 'Inter', system-ui, sans-serif;
+    }
 
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        font-family: var(--font-family);
+        background-color: var(--bg-base);
+        color: var(--text-main);
+        line-height: 1.6;
+        padding: 20px;
+    }
+
+    .container {
+        max-width: 1000px;
+        margin: 40px auto;
+    }
+
+    header {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+    h1 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 8px;
+        background: linear-gradient(to right, #38bdf8, #818cf8);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .subtitle {
+        color: var(--text-muted);
+        font-size: 1.1rem;
+    }
+
+    .input-group {
+        display: flex;
+        gap: 12px;
+        margin-bottom: 24px;
+    }
+
+    input {
+        flex: 1;
+        padding: 14px 20px;
+        font-size: 1rem;
+        background: var(--bg-surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        color: var(--text-main);
+        font-family: var(--font-family);
+        transition: all 0.2s ease;
+    }
+
+    input:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
+    }
+
+    button {
+        padding: 14px 28px;
+        background: var(--primary);
+        color: #0369a1;
+        font-size: 1rem;
+        font-weight: 600;
+        border: none;
+        border-radius: var(--radius-lg);
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    button:hover:not(:disabled) {
+        background: var(--primary-hover);
+        color: #fff;
+    }
+
+    button:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+    }
+
+    #error-message {
+        display: none;
+        background: rgba(239, 68, 68, 0.1);
+        color: var(--danger);
+        padding: 12px 16px;
+        border-radius: var(--radius-md);
+        border: 1px solid rgba(239, 68, 68, 0.2);
+        margin-bottom: 24px;
+        font-size: 0.9rem;
+    }
+
+    .section-container {
+        display: none;
+        flex-direction: column;
+        gap: 24px;
+    }
+
+    .section {
+        background: var(--bg-surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        padding: 24px;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+
+    .section h2 {
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .section p {
+        color: var(--text-muted);
+        font-size: 0.95rem;
+        margin-bottom: 20px;
+    }
+
+    .tokens-wrapper {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    .token {
+        padding: 8px 16px;
+        background: var(--bg-base);
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        font-weight: 500;
+        font-size: 0.95rem;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+
+    .token.low { border-left: 4px solid var(--success); }
+    .token.medium { border-left: 4px solid var(--warning); }
+    .token.high { border-left: 4px solid var(--danger); }
+
+    .legend {
+        margin-top: 16px;
+        font-size: 0.85rem;
+        color: var(--text-muted);
+        display: flex;
+        flex-wrap: wrap;
+        gap: 16px;
+    }
+
+    .legend span {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        display: inline-block;
+    }
+
+    .topk-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 16px;
+    }
+
+    .topk-card {
+        background: var(--bg-base);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-md);
+        padding: 16px;
+    }
+
+    .topk-header {
+        font-weight: 700;
+        color: var(--primary);
+        margin-bottom: 12px;
+        border-bottom: 1px solid var(--border);
+        padding-bottom: 8px;
+    }
+
+    .topk-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 8px;
+        font-size: 0.9rem;
+    }
+
+    .topk-word { width: 80px; font-weight: 500; }
+    .topk-bar-container {
+        flex: 1;
+        height: 8px;
+        background: var(--bg-surface-hover);
+        border-radius: 4px;
+        overflow: hidden;
+        margin: 0 10px;
+    }
+    .topk-bar {
+        height: 100%;
+        background: var(--primary);
+        border-radius: 4px;
+    }
+    .topk-prob { width: 45px; text-align: right; color: var(--text-muted); font-size: 0.8rem; }
+
+    .attention-container {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch; 
+    }
+
+    table {
+        border-collapse: collapse;
+        width: max-content;
+    }
+
+    th, td {
+        padding: 12px;
+        text-align: center;
+        border: 1px solid var(--border);
+        min-width: 40px;
+        height: 40px;
+        font-size: 0.85rem;
+    }
+
+    th {
+        background: var(--bg-base);
+        font-weight: 600;
+        color: var(--text-muted);
+    }
+
+    td {
+        transition: transform 0.1s;
+    }
+    
+    td:hover {
+        transform: scale(1.1);
+        border-radius: 4px;
+        box-shadow: 0 0 8px rgba(0,0,0,0.5);
+        z-index: 10;
+        position: relative;
+    }
+
+    .spinner {
+        display: none;
+        width: 16px;
+        height: 16px;
+        border: 2px solid #0369a1;
+        border-bottom-color: transparent;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+    }
+    @keyframes spin { 100% { transform: rotate(360deg); } }
+
+    #infoBtn {
+        position: fixed;
+        top: 24px;
+        right: 24px;
+        background: var(--bg-surface);
+        color: var(--text-main);
+        border: 1px solid var(--border);
+        padding: 10px 20px;
+        border-radius: 50px;
+        cursor: pointer;
+        font-weight: 600;
+        font-family: var(--font-family);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.2s ease;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        z-index: 100;
+    }
+
+    #infoBtn:hover {
+        border-color: var(--primary);
+        color: var(--primary);
+        transform: translateY(-2px);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    }
+
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 999;
+        inset: 0;
+        background: rgba(15, 23, 42, 0.7);
+        backdrop-filter: blur(6px);
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        padding: 20px;
+    }
+
+    .modal.show {
+        display: flex;
+        opacity: 1;
+    }
+
+    .modal-content {
+        background: var(--bg-surface);
+        border: 1px solid var(--border);
+        width: 100%;
+        max-width: 600px;
+        border-radius: var(--radius-lg);
+        padding: 32px;
+        position: relative;
+        transform: translateY(20px);
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        max-height: 85vh;
+        overflow-y: auto;
+    }
+
+    .modal.show .modal-content {
+        transform: translateY(0);
+    }
+
+    .close {
+        position: absolute;
+        top: 24px;
+        right: 24px;
+        width: 32px;
+        height: 32px;
+        background: var(--bg-base);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        color: var(--text-muted);
+        transition: all 0.2s ease;
+        font-size: 1.5rem;
+        line-height: 1;
+    }
+
+    .close:hover {
+        background: var(--danger);
+        color: white;
+        transform: rotate(90deg);
+    }
+
+    .modal h2 { margin-bottom: 8px; padding-right: 32px; }
+    .modal-subtitle { color: var(--text-muted); margin-bottom: 24px; font-size: 0.95rem; }
+
+    .modal h3 {
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--text-muted);
+        margin: 24px 0 12px 0;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .example {
+        background: var(--bg-base);
+        border: 1px solid var(--border);
+        padding: 14px 16px;
+        margin-bottom: 8px;
+        border-radius: var(--radius-md);
+        cursor: pointer;
+        transition: all 0.2s ease;
+        font-size: 0.95rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .example::after {
+        content: '→';
+        opacity: 0;
+        transform: translateX(-10px);
+        transition: all 0.2s ease;
+        color: var(--primary);
+        font-weight: bold;
+    }
+
+    .example:hover {
+        border-color: var(--primary);
+        background: rgba(56, 189, 248, 0.05);
+        transform: translateX(4px);
+    }
+
+    .example:hover::after {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+    .hint {
+        margin-top: 32px;
+        padding-top: 16px;
+        border-top: 1px solid var(--border);
+        font-size: 0.85rem;
+        color: var(--text-muted);
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+        align-items: center;
+    }
+
+    @media (max-width: 768px) {
         body {
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            font-family: 'Inter', system-ui, -apple-system, sans-serif;
-            background-color: var(--bg-color);
-            background-image: 
-                radial-gradient(at 0% 0%, hsla(253,16%,7%,1) 0, transparent 50%), 
-                radial-gradient(at 50% 0%, hsla(225,39%,30%,1) 0, transparent 50%), 
-                radial-gradient(at 100% 0%, hsla(339,49%,30%,1) 0, transparent 50%);
-            background-attachment: fixed;
+            padding: 16px;
         }
 
-        .maintenance-card {
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            padding: 3rem;
-            border-radius: 24px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-            text-align: center;
-            max-width: 450px;
-            width: 90%;
-        }
-
-        .icon-wrapper {
-            position: relative;
-            display: inline-block;
-            margin-bottom: 1.5rem;
-        }
-
-        .maintenance-icon {
-            font-size: 4rem;
-            display: inline-block;
-            animation: pulse 2s infinite ease-in-out;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.1); opacity: 0.8; }
+        .container {
+            margin: 60px auto 20px;
         }
 
         h1 {
-            color: var(--text-main);
-            font-size: 1.875rem;
-            margin: 0 0 1rem 0;
-            font-weight: 800;
+            font-size: 1.8rem;
         }
 
-        p {
-            color: var(--text-muted);
-            line-height: 1.6;
-            margin-bottom: 2rem;
+        .subtitle {
+            font-size: 0.95rem;
         }
 
-        .status-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: #e0e7ff;
-            color: var(--primary-color);
-            padding: 6px 16px;
-            border-radius: 99px;
-            font-size: 0.875rem;
-            font-weight: 600;
+        .input-group {
+            flex-direction: column;
         }
 
-        .dot {
-            width: 8px;
-            height: 8px;
-            background-color: var(--primary-color);
-            border-radius: 50%;
-        }
-
-        .progress-bar {
-            height: 6px;
+        button {
             width: 100%;
-            background: #e2e8f0;
-            border-radius: 10px;
-            overflow: hidden;
-            margin-top: 2rem;
         }
 
-        .progress-fill {
-            height: 100%;
-            width: 65%; /* Change this based on progress */
-            background: var(--primary-color);
-            border-radius: 10px;
-            transition: width 0.5s ease;
+        #infoBtn {
+            top: 16px;
+            right: 16px;
+            padding: 8px 16px;
+            font-size: 0.9rem;
         }
-    </style>
-    <title>Under Maintenance</title>
+
+        .modal-content {
+            padding: 24px 16px; 
+        }
+
+        .close {
+            top: 16px;
+            right: 16px;
+        }
+
+        .topk-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .section {
+            padding: 16px;
+        }
+
+        .tokens-wrapper {
+            gap: 8px;
+        }
+
+        .token {
+            padding: 6px 12px;
+            font-size: 0.85rem;
+        }
+
+        th, td {
+            padding: 8px;
+            font-size: 0.75rem;
+            min-width: 30px;
+            height: 30px;
+        }
+    }
+</style>
 </head>
 <body>
 
-    <div class="maintenance-card">
-        <div class="icon-wrapper">
-            <span class="maintenance-icon">🛠️</span>
-        </div>
+<main class="container">
+    <header>
         
-        <div class="status-badge">
-            <span class="dot"></span>
-            <span>Currently Under Maintenance</span>
-        </div>
+<button class="btn" onclick="window.location.href='outputs.html'">
+    View Outputs <span>→</span>
+</button>
 
-        <h1>Refining the Experience</h1>
+<div id="modal" class="modal" onclick="closeModalOutside(event)">
+    <div class="modal-content">
+        <div class="close" onclick="closeModal()">×</div>
+
+        <h2>🧠 Try These Examples</h2>
+        <p class="modal-subtitle">Click any sentence to load it into the analyzer.</p>
+
+        <h3><span class="dot" style="background: var(--success)"></span> Simple</h3>
+        <div class="example" onclick="fill(this)">The dog is barking</div>
+        <div class="example" onclick="fill(this)">The cat is sleeping</div>
+
+        <h3><span class="dot" style="background: var(--warning)"></span> Longer Sentences</h3>
+        <div class="example" onclick="fill(this)">The dog near the house is barking</div>
+        <div class="example" onclick="fill(this)">The dog near the house on the street is barking</div>
+
+        <h3><span class="dot" style="background: var(--danger)"></span> Complex (Important)</h3>
+        <div class="example" onclick="fill(this)">The dog that the cat chased is barking</div>
+        <div class="example" onclick="fill(this)">The dog that the cat that the boy saw chased is barking</div>
         
-        <p>
-            I am currently fine tuning the website to serve it better. It'll be back online soon!
+        <h3>🎯 Ambiguous</h3>
+        <div class="example" onclick="fill(this)">The man saw the boy with the telescope</div>
+        <div class="example" onclick="fill(this)">The girl told the boy that she liked him</div>
+
+        <h3>⚡ Surprisal Demo</h3>
+        <div class="example" onclick="fill(this)">The pizza was too hot to eat</div>
+        <div class="example" onclick="fill(this)">The pizza was too hot to cry</div>
+
+        <p class="hint">
+            <span class="dot" style="background: var(--success)"></span> Easy | 
+            <span class="dot" style="background: var(--warning)"></span> Medium | 
+            <span class="dot" style="background: var(--danger)"></span> Hard
         </p>
+    </div>
+</div>
 
-        <div class="progress-bar">
-            <div class="progress-fill"></div>
-        </div>
-        <p style="font-size: 0.75rem; margin-top: 0.5rem;">Estimated progress: 65%</p>
+        <h1>🤖 LLM Thinking Explorer</h1>
+        <div class="subtitle">This page helps you quickly see how the model reads and predicts your sentence.</div>
+    </header>
+
+    <div class="input-group">
+        <input type="text" id="text-input" value="The dog that the cat chased is barking" placeholder="Enter a sentence to analyze...">
+        <button id="analyze-btn" onclick="runAnalysis()">
+            <span class="spinner" id="spinner"></span>
+            <span id="btn-text">Analyze</span>
+        </button>
     </div>
 
+    <div id="error-message"></div>
+
+    <div id="results-container" class="section-container">
+        <section class="section">
+            <h2> Step 1: Tokenization</h2>
+            <p>The model breaks the input text into smaller structural units called tokens.</p>
+            <div id="tokens" class="tokens-wrapper"></div>
+        </section>
+
+        <section class="section">
+            <h2> Step 2: Prediction Difficulty (Surprisal)</h2>
+            <p>Analyzes how "surprising" or difficult it was for the model to predict each token based on the previous context.</p>
+            <div id="surprisal" class="tokens-wrapper"></div>
+            <div class="legend">
+                <span><i class="dot" style="background: var(--success)"></i> Low (Expected)</span>
+                <span><i class="dot" style="background: var(--warning)"></i> Medium</span>
+                <span><i class="dot" style="background: var(--danger)"></i> High (Surprising)</span>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2> Step 3: Next-Token Probabilities (Top-K)</h2>
+            <p>For each position, the model calculates the probability of various words coming next. Here are its top choices.</p>
+            <div id="topk" class="topk-grid"></div>
+        </section>
+
+  <section class="section">
+            <h2> Step 4: Attention Mechanism</h2>
+            <p>Visualizes which previous words the model focused on while processing the current word.</p>
+            
+            <div style="display: flex; gap: 1rem; margin: 1.5rem 0; background: #1e293b; padding: 1.5rem; border-radius: 8px; border: 1px solid #334155;">
+                <div style="flex: 1;">
+                    <h3 style="color: #a78bfa; margin-top:0;"> How Humans Read</h3>
+                    <p style="font-size: 0.9rem; opacity: 0.8;">We skip intermediate words to connect subjects structurally to their verbs across long distances.</p>
+                </div>
+                <div style="flex: 1; border-left: 1px solid #334155; padding-left: 1rem;">
+                    <h3 style="color: #38bdf8; margin-top:0;"> How LLMs Read</h3>
+                    <p style="font-size: 0.9rem; opacity: 0.8;">Models are forced to assign math probabilities sequentially. Unused attention gets dumped into the first word (The <strong>Attention Sink</strong>).</p>
+                </div>
+            </div>
+
+            <div style="margin-bottom: 1.5rem; padding: 1rem; background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 8px; display: flex; align-items: center; justify-content: space-between;">
+                <div>
+                    <h4 style="margin: 0 0 0.25rem 0; color: #e2e8f0;">Normalize Attention (Hide 'Attention Sink')</h4>
+                    <span style="font-size: 0.85rem; color: #94a3b8;">Ignores the heavy focus on the first word to reveal the hidden semantic connections in the darker squares.</span>
+                </div>
+                <label style="position: relative; display: inline-block; width: 50px; height: 28px;">
+                    <input type="checkbox" id="sink-toggle" onchange="toggleSink()" style="opacity: 0; width: 0; height: 0;">
+                    <span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #334155; border-radius: 34px; transition: .4s; border: 2px solid #38bdf8;"></span>
+                    <span id="toggle-knob" style="position: absolute; height: 20px; width: 20px; left: 4px; bottom: 2px; background-color: #38bdf8; border-radius: 50%; transition: .4s;"></span>
+                </label>
+            </div>
+
+            <div class="attention-container">
+                <table id="attention"></table>
+            </div>
+        </section>
+<section class="section" id="animation-section">
+    <h2>🆚 Final Review: Human vs. LLM</h2>
+    <p>A live replay of how biological brains and artificial transformers process the exact sentence you entered above.</p>
+    
+    <div class="anim-controls">
+        <button class="anim-btn" onclick="playBrainComparison()">▶ Play Animation on My Sentence</button>
+    </div>
+
+    <div class="comparison-grid">
+        <div class="anim-panel">
+            <div class="panel-header" style="color: #a78bfa;">
+                <span> Human Brain</span>
+                <span style="font-size: 0.8rem; opacity: 0.7;">Structural & Semantic</span>
+            </div>
+            <div class="panel-body" id="human-anim-area">
+                <div class="sentence-container" id="h-sentence"></div>
+                
+                <svg class="connection-svg" id="human-svg"></svg>
+                <div class="anim-status" id="human-status">Waiting to start...</div>
+            </div>
+        </div>
+
+        <div class="anim-panel">
+            <div class="panel-header" style="color: #38bdf8;">
+                <span> Transformer LLM</span>
+                <span style="font-size: 0.8rem; opacity: 0.7;">Sequential & Statistical</span>
+            </div>
+            <div class="panel-body" id="llm-anim-area">
+                <div class="sentence-container" id="l-sentence"></div>
+                
+                <div class="llm-math-popup" id="llm-popup">P(w)</div>
+                <div class="attention-beam" id="att-beam"></div>
+                <div class="anim-status" id="llm-status">Waiting to start...</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .comparison-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+        margin-top: 1.5rem;
+    }
+    @media (max-width: 768px) {
+        .comparison-grid { grid-template-columns: 1fr; }
+    }
+    
+    .anim-panel {
+        background: #0f172a;
+        border: 1px solid #334155;
+        border-radius: 8px;
+        overflow: hidden;
+        position: relative;
+    }
+    
+    .panel-header {
+        background: #1e293b;
+        padding: 1rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid #334155;
+        font-weight: bold;
+    }
+    
+    .panel-body {
+        padding: 3rem 1.5rem 4rem 1.5rem;
+        position: relative;
+        min-height: 150px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .sentence-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.5rem;
+        position: relative;
+        z-index: 2;
+        width: 100%;
+    }
+    
+    .anim-word {
+        font-size: 1.1rem;
+        padding: 0.2rem 0.4rem;
+        border-radius: 4px;
+        transition: all 0.3s ease;
+        color: #94a3b8;
+        position: relative;
+    }
+
+    .anim-status {
+        position: absolute;
+        bottom: 10px;
+        left: 0;
+        width: 100%;
+        text-align: center;
+        font-size: 0.85rem;
+        color: #64748b;
+        font-family: monospace;
+    }
+
+    .anim-btn {
+        background: #38bdf8;
+        color: #0f172a;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        border-radius: 6px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background 0.2s;
+    }
+    .anim-btn:hover { background: #0ea5e9; }
+
+    .human-active { color: #a78bfa; font-weight: bold; transform: scale(1.1); }
+    .human-dim { opacity: 0.3; }
+    .connection-svg {
+        position: absolute;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        pointer-events: none;
+        z-index: 1;
+        overflow: visible;
+    }
+    .human-path {
+        fill: none;
+        stroke: #a78bfa;
+        stroke-width: 2;
+        stroke-dasharray: 1000;
+        stroke-dashoffset: 1000;
+        opacity: 0.5;
+    }
+
+    .llm-active { background: rgba(56, 189, 248, 0.2); color: #38bdf8; outline: 1px solid #38bdf8; }
+    .llm-sink-active { background: rgba(56, 189, 248, 0.5); color: #fff; }
+    .llm-math-popup {
+        position: absolute;
+        background: #38bdf8;
+        color: #0f172a;
+        font-size: 0.75rem;
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-weight: bold;
+        opacity: 0;
+        transition: opacity 0.2s, transform 0.2s;
+        z-index: 10;
+    }
+    .attention-beam {
+        position: absolute;
+        height: 3px;
+        background: linear-gradient(90deg, #38bdf8, transparent);
+        opacity: 0;
+        z-index: 1;
+        transition: opacity 0.2s;
+        border-radius: 2px;
+    }
+</style>
+
+<script>
+    function playBrainComparison() {
+        const textInput = document.getElementById("text-input").value.trim();
+        if (!textInput) {
+            alert("Please enter a sentence to analyze first!");
+            return;
+        }
+
+        const tokens = textInput.match(/\S+|\s/g).filter(t => t.trim().length > 0);
+
+        const hContainer = document.getElementById("h-sentence");
+        const lContainer = document.getElementById("l-sentence");
+        hContainer.innerHTML = "";
+        lContainer.innerHTML = "";
+
+        tokens.forEach((t) => {
+            hContainer.innerHTML += `<span class="anim-word h-word">${t}</span>`;
+            lContainer.innerHTML += `<span class="anim-word l-word">${t}</span>`;
+        });
+
+        const hStatus = document.getElementById('human-status');
+        const lStatus = document.getElementById('llm-status');
+        const popup = document.getElementById('llm-popup');
+        const beam = document.getElementById('att-beam');
+        const svg = document.getElementById('human-svg');
+        
+        svg.innerHTML = "";
+        popup.style.opacity = '0';
+        beam.style.opacity = '0';
+
+        const hWords = document.querySelectorAll('.h-word');
+        const lWords = document.querySelectorAll('.l-word');
+
+
+        const stopWords = ["the", "a", "an", "is", "are", "was", "were", "of", "to", "in", "that", "which", "whom", "for", "on", "at"];
+        let contentIndices = [];
+
+        hWords.forEach((w, i) => {
+            if (stopWords.includes(w.innerText.toLowerCase())) {
+                w.dataset.type = "stop";
+            } else {
+                w.dataset.type = "content";
+                contentIndices.push(i);
+            }
+        });
+
+        setTimeout(() => {
+            hStatus.textContent = "1. Scanning for core meaning... (Dimming filler words)";
+            hWords.forEach(w => {
+                if(w.dataset.type === "stop") w.classList.add('human-dim');
+            });
+        }, 500);
+
+        setTimeout(() => {
+            hStatus.textContent = "2. Linking structural concepts across distance...";
+            
+            hWords.forEach(w => {
+                if(w.dataset.type === "content") w.classList.add('human-active');
+            });
+
+            const svgRect = svg.getBoundingClientRect();
+            
+            for(let i = 0; i < contentIndices.length - 1; i++) {
+                let startEl = hWords[contentIndices[i]];
+                let endEl = hWords[contentIndices[i+1]];
+
+                let startRect = startEl.getBoundingClientRect();
+                let endRect = endEl.getBoundingClientRect();
+
+                let startX = (startRect.left - svgRect.left) + (startRect.width / 2);
+                let startY = (startRect.top - svgRect.top);
+                let endX = (endRect.left - svgRect.left) + (endRect.width / 2);
+                let endY = (endRect.top - svgRect.top);
+
+                let path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+                path.setAttribute("class", "human-path");
+                
+                let midX = (startX + endX) / 2;
+                let arcHeight = startY - 20 - (Math.abs(endX - startX) * 0.1);
+                
+                path.setAttribute("d", `M ${startX} ${startY} Q ${midX} ${arcHeight} ${endX} ${endY}`);
+                svg.appendChild(path);
+
+                void path.offsetWidth; 
+                path.style.transition = 'stroke-dashoffset 0.8s ease';
+                path.style.strokeDashoffset = '0';
+            }
+        }, 1500);
+
+        setTimeout(() => {
+            hStatus.textContent = "3. Meaning extracted. Sentence understood.";
+        }, 3000);
+
+
+        let step = 0;
+        
+        function nextToken() {
+            if (step >= lWords.length) {
+                lStatus.textContent = "Processing complete. Attention sink absorbed excess weights.";
+                popup.style.opacity = '0';
+                beam.style.opacity = '0';
+                return;
+            }
+
+            lWords.forEach(w => w.classList.remove('llm-active'));
+            lWords[step].classList.add('llm-active');
+            
+            let currentEl = lWords[step];
+            let firstEl = lWords[0];
+            let areaRect = document.getElementById("llm-anim-area").getBoundingClientRect();
+            let currentRect = currentEl.getBoundingClientRect();
+            let firstRect = firstEl.getBoundingClientRect();
+
+            if (step > 0) {
+                lWords[0].classList.add('llm-sink-active');
+                
+                let startX = (firstRect.right - areaRect.left);
+                let endX = (currentRect.left - areaRect.left);
+                let currentY = (currentRect.top - areaRect.top) + (currentRect.height / 2);
+                let firstY = (firstRect.top - areaRect.top) + (firstRect.height / 2);
+
+                beam.style.opacity = '0.4';
+                if (Math.abs(currentY - firstY) < 20) {
+                    beam.style.width = Math.max(0, endX - startX) + 'px';
+                    beam.style.left = startX + 'px';
+                    beam.style.top = currentY + 'px';
+                } else {
+                    beam.style.opacity = '0';
+                }
+            }
+
+            let fakeProb = (Math.random() * 0.5 + 0.4).toFixed(2);
+            popup.textContent = `P(next)=${fakeProb}`;
+            popup.style.opacity = '1';
+            
+            popup.style.left = (currentRect.left - areaRect.left) + 'px';
+            popup.style.top = (currentRect.top - areaRect.top - 25) + 'px';
+
+            lStatus.textContent = `Calculating sequential matrices for token [${step}]...`;
+
+            step++;
+            
+            let delay = tokens.length > 15 ? 400 : 700;
+            setTimeout(nextToken, delay);
+        }
+
+        setTimeout(nextToken, 500);
+    }
+</script>
+    </div>
+</main>
+
+<script>
+    let globalTokens = [];
+    let globalAttention = [];
+    let ignoreSink = false;
+
+    function toggleSink() {
+        const checkbox = document.getElementById("sink-toggle");
+        const knob = document.getElementById("toggle-knob");
+        ignoreSink = checkbox.checked;
+        
+        if(ignoreSink) {
+            knob.style.transform = "translateX(22px)";
+            knob.style.backgroundColor = "#fff";
+            knob.parentElement.style.backgroundColor = "#38bdf8";
+        } else {
+            knob.style.transform = "translateX(0)";
+            knob.style.backgroundColor = "#38bdf8";
+            knob.parentElement.style.backgroundColor = "#334155";
+        }
+
+        if(globalTokens.length > 0 && globalAttention.length > 0) {
+            renderAttention(globalTokens, globalAttention);
+        }
+    }
+
+
+  
+    const getSurprisalClass = (score) => {
+        if (score < 1.0) return "low";
+        if (score < 2.5) return "medium";
+        return "high";
+    };
+
+    const formatProb = (prob) => `${(prob * 100).toFixed(1)}%`;
+
+    async function runAnalysis() {
+        const textInput = document.getElementById("text-input").value.trim();
+        const btn = document.getElementById("analyze-btn");
+        const btnText = document.getElementById("btn-text");
+        const spinner = document.getElementById("spinner");
+        const errorMsg = document.getElementById("error-message");
+        const resultsContainer = document.getElementById("results-container");
+
+        if (!textInput) return;
+
+        btn.disabled = true;
+        btnText.textContent = "Analyzing...";
+        spinner.style.display = "block";
+        errorMsg.style.display = "none";
+        resultsContainer.style.display = "none";
+
+        try {
+            const res = await fetch("https://cgs.backend.muragesh.tech/analyze", 
+            // const res = await fetch("http://localhost:5000/analyze",
+            {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ text: textInput })
+            });
+
+            if (!res.ok) throw new Error("Server responded with an error");
+            const data = await res.json();
+            renderAll(data);
+
+        } catch (error) {
+            console.warn("Backend unavailable. Falling back to mock data generation for demonstration.");
+            const mockData = generateMockData(textInput);
+            renderAll(mockData);
+            
+            errorMsg.textContent = "Note: Could not connect to local backend. Displaying generated mock data for demonstration purposes.";
+            errorMsg.style.display = "block";
+        } finally {
+            btn.disabled = false;
+            btnText.textContent = "Analyze";
+            spinner.style.display = "none";
+            resultsContainer.style.display = "flex";
+        }
+    }
+
+   function renderAll(data) {
+        globalTokens = data.tokens;
+        globalAttention = data.attention;
+
+        if(data.metrics) {
+            renderMetrics(data.metrics);
+        }
+
+        renderTokens(data.tokens);
+        renderSurprisal(data.analysis);
+        renderTopK(data.analysis);
+        renderAttention(data.tokens, data.attention);
+    }
+function renderMetrics(metrics) {
+        const totalTime = document.getElementById("metric-total-time");
+        const timePerToken = document.getElementById("metric-time-per-token");
+        const perplexity = document.getElementById("metric-perplexity");
+        
+        if (totalTime) totalTime.textContent = `${metrics.total_processing_time_ms} ms`;
+        if (timePerToken) timePerToken.textContent = `${metrics.time_per_token_ms} ms`;
+        if (perplexity) perplexity.textContent = metrics.overall_perplexity;
+    }
+    function renderTokens(tokens) {
+        const container = document.getElementById("tokens");
+        container.innerHTML = "";
+        tokens.forEach(t => {
+            const span = document.createElement("span");
+            span.className = "token";
+            span.textContent = t;
+            container.appendChild(span);
+        });
+    }
+
+    function renderSurprisal(analysis) {
+        const container = document.getElementById("surprisal");
+        container.innerHTML = "";
+        analysis.forEach(item => {
+            const span = document.createElement("span");
+            const diffClass = getSurprisalClass(item.surprisal);
+            span.className = `token ${diffClass}`;
+            span.textContent = `${item.token} (${item.surprisal.toFixed(2)})`;
+            span.title = `Surprisal Score: ${item.surprisal.toFixed(2)}`;
+            container.appendChild(span);
+        });
+    }
+
+    function renderTopK(analysis) {
+        const container = document.getElementById("topk");
+        container.innerHTML = "";
+        
+        analysis.forEach(item => {
+            const card = document.createElement("div");
+            card.className = "topk-card";
+            
+            let html = `<div class="topk-header">${item.token}</div>`;
+            
+            item.topk.forEach(cand => {
+                html += `
+                    <div class="topk-item">
+                        <span class="topk-word">${cand.token}</span>
+                        <div class="topk-bar-container">
+                            <div class="topk-bar" style="width: ${cand.prob * 100}%"></div>
+                        </div>
+                        <span class="topk-prob">${formatProb(cand.prob)}</span>
+                    </div>
+                `;
+            });
+            
+            card.innerHTML = html;
+            container.appendChild(card);
+        });
+    }
+
+function renderAttention(tokens, matrix) {
+        const table = document.getElementById("attention");
+        table.innerHTML = "";
+
+        const thead = document.createElement("tr");
+        thead.appendChild(document.createElement("th"));
+        tokens.forEach(t => {
+            const th = document.createElement("th");
+            th.textContent = t;
+            thead.appendChild(th);
+        });
+        table.appendChild(thead);
+
+        matrix.forEach((row, i) => {
+            const tr = document.createElement("tr");
+            
+            const rowHeader = document.createElement("th");
+            rowHeader.textContent = tokens[i];
+            tr.appendChild(rowHeader);
+
+            let rowMax = 1.0;
+            if (ignoreSink && i > 0) {
+                rowMax = 0;
+                for(let j = 1; j < row.length; j++) {
+                    if(row[j] > rowMax) rowMax = row[j];
+                }
+                if (rowMax === 0) rowMax = 1.0; 
+            }
+
+            row.forEach((val, j) => {
+                const td = document.createElement("td");
+                
+                let displayVal = val;
+                
+                if (ignoreSink) {
+                    if (j === 0 && i > 0) {
+                        displayVal = 0;
+                    } else {
+                        displayVal = val / rowMax; 
+                    }
+                }
+
+                td.style.backgroundColor = `rgba(56, 189, 248, ${displayVal})`;
+                td.title = `Raw Attention: ${(val * 100).toFixed(1)}%`;
+                tr.appendChild(td);
+            });
+            table.appendChild(tr);
+        });
+    }
+
+    function generateMockData(text) {
+        const tokens = text.match(/\S+|\s/g).filter(t => t.trim().length > 0);
+        const analysis = tokens.map(token => {
+            const surprisal = Math.random() * 3.5;
+            return {
+                token: token,
+                surprisal: surprisal,
+                topk: [
+                    { token: token, prob: Math.random() * 0.5 + 0.4 },
+                    { token: "wordA", prob: Math.random() * 0.2 + 0.1 },
+                    { token: "wordB", prob: Math.random() * 0.1 }
+                ].sort((a, b) => b.prob - a.prob)
+            };
+        });
+
+        const attention = tokens.map((_, i) => {
+            return tokens.map((_, j) => {
+                if (j > i) return 0;
+                if (j === i) return Math.random() * 0.5 + 0.5;
+                return Math.random() * (1 / (i - j + 1));
+            });
+        });
+
+        return { tokens, analysis, attention };
+    }
+function openModal() {
+    const modal = document.getElementById("modal");
+    modal.style.display = "flex";
+    setTimeout(() => {
+        modal.classList.add("show");
+    }, 10);
+}
+
+function closeModal() {
+    const modal = document.getElementById("modal");
+    modal.classList.remove("show");
+    setTimeout(() => {
+        modal.style.display = "none";
+    }, 300);
+}
+
+function closeModalOutside(event) {
+    if (event.target.id === "modal") {
+        closeModal();
+    }
+}
+
+function fill(element) {
+    const input = document.getElementById("text-input");
+    input.value = element.innerText;
+    closeModal();
+    
+    document.getElementById("analyze-btn").click();
+}
+</script>
 </body>
 </html>
