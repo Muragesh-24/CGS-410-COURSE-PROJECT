@@ -3,135 +3,191 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LLM vs Human Analysis</title>
+<title>LLM vs Human Syntactic Analysis Dashboard</title>
 
 <style>
-    body {
-        margin: 0;
-        font-family: 'Segoe UI', sans-serif;
-        background: #f4f6f9;
+    :root {
+        --bg-color: #f8fafc;
+        --surface-color: #ffffff;
+        --text-primary: #0f172a;
+        --text-secondary: #475569;
+        --accent-color: #2563eb;
+        --border-color: #e2e8f0;
+        --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+        --radius: 12px;
     }
 
-    /* NAV */
+    html { scroll-behavior: smooth; }
+
+    body {
+        margin: 0;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        background-color: var(--bg-color);
+        color: var(--text-primary);
+        line-height: 1.6;
+    }
+
     nav {
         position: sticky;
         top: 0;
-        background: #111827;
-        padding: 15px;
-        text-align: center;
-        z-index: 100; /* Ensures nav stays above zoomed images */
+        background: rgba(255, 255, 255, 0.85);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        padding: 1rem 2rem;
+        display: flex;
+        justify-content: center;
+        gap: 1.5rem;
+        z-index: 1000;
+        border-bottom: 1px solid var(--border-color);
+        flex-wrap: wrap;
     }
 
     nav a {
-        color: white;
-        margin: 0 12px;
+        color: var(--text-secondary);
         text-decoration: none;
-        font-weight: 500;
-        transition: color 0.2s ease;
+        font-weight: 600;
+        font-size: 0.95rem;
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        transition: all 0.2s ease;
     }
 
     nav a:hover {
-        color: #60a5fa;
+        color: var(--accent-color);
+        background: #eff6ff;
     }
 
-    /* SECTION */
+    .hero {
+        background: #0f172a;
+        color: white;
+        padding: 5rem 2rem;
+        text-align: center;
+    }
+
+    .hero h1 {
+        margin: 0;
+        font-size: 2.5rem;
+        font-weight: 800;
+    }
+
+    .hero p {
+        color: #94a3b8;
+        max-width: 600px;
+        margin: 1rem auto 0 auto;
+        font-size: 1.1rem;
+    }
+
+    main {
+        max-width: 1600px;
+        margin: 0 auto;
+        padding: 2rem;
+    }
+
     .section {
-        margin: 40px auto;
-        width: 92%;
-        max-width: 1400px; /* Added max-width for ultra-wide screens */
-        background: white;
-        padding: 30px;
-        border-radius: 12px;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+        margin-bottom: 5rem;
+        scroll-margin-top: 100px;
     }
 
-    .section h2 {
-        margin-bottom: 20px;
+    .section-header {
+        margin-bottom: 2rem;
+        border-bottom: 2px solid var(--border-color);
+        padding-bottom: 1rem;
     }
 
-    /* GRID - bigger cards */
+    .section-header h2 { font-size: 1.8rem; margin: 0 0 0.5rem 0; }
+    .section-header p { color: var(--text-secondary); margin: 0; }
+
     .grid {
         display: grid;
-        /* Using min() ensures it never overflows the container width */
-        grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
-        gap: 25px;
+        grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+        gap: 2.5rem;
     }
 
-    /* CARD */
     .card {
-        background: #fafafa;
-        padding: 12px;
-        border-radius: 12px;
+        background: var(--surface-color);
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius);
         overflow: hidden;
-        transition: all 0.3s ease;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        display: flex;
+        flex-direction: column;
     }
 
-    /* HOVER EFFECT */
     .card:hover {
-        transform: translateY(-8px) scale(1.02);
-        box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+        transform: translateY(-5px);
+        box-shadow: var(--shadow-lg);
+        border-color: #cbd5e1;
     }
 
-    /* IMAGE */
+    .image-wrapper {
+        width: 100%;
+        background: #f1f5f9;
+        position: relative;
+        overflow: hidden;
+        border-bottom: 1px solid var(--border-color);
+    }
+
     img {
         width: 100%;
-        border-radius: 10px;
-        transition: transform 0.3s ease;
-        display: block; /* Removes bottom spacing on images */
+        height: auto;
+        display: block;
+        transition: transform 0.5s ease;
+        cursor: zoom-in;
     }
 
-    /* ZOOM IMAGE INSIDE CARD */
     .card:hover img {
-        transform: scale(1.05);
+        transform: scale(1.02);
     }
 
-    /* CAPTION */
-    .caption {
-        text-align: center;
-        font-size: 14px;
-        margin-top: 10px;
-        color: #444;
+    .card-content {
+        padding: 1.5rem;
+        flex-grow: 1;
     }
 
-    /* =========================================
-       RESPONSIVE ADJUSTMENTS 
-       ========================================= */
+    .card-title { font-size: 1.2rem; font-weight: 700; margin: 0 0 0.5rem 0; }
+    .card-desc { font-size: 1rem; color: var(--text-secondary); margin: 0; line-height: 1.5; }
+
+    #lightbox {
+        display: none; 
+        position: fixed; 
+        z-index: 9999; 
+        left: 0; 
+        top: 0; 
+        width: 100%; 
+        height: 100%; 
+        background-color: rgba(15, 23, 42, 0.95);
+        backdrop-filter: blur(5px);
+        justify-content: center;
+        align-items: center;
+        padding: 2rem;
+        box-sizing: border-box;
+        cursor: zoom-out;
+    }
+
+    #lightbox img {
+        max-width: 100%;
+        max-height: 90vh;
+        width: auto;
+        height: auto;
+        border-radius: 8px;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        cursor: default;
+    }
+
+    #lightbox-close {
+        position: absolute;
+        top: 20px;
+        right: 30px;
+        color: white;
+        font-size: 40px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
     @media (max-width: 768px) {
-        nav {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 12px;
-            padding: 12px;
-        }
-
-        nav a {
-            margin: 0;
-            font-size: 0.9rem;
-        }
-
-        .section {
-            width: 95%;
-            margin: 20px auto;
-            padding: 20px;
-        }
-
-        .section h2 {
-            font-size: 1.35rem;
-            margin-bottom: 15px;
-        }
-
-        .grid {
-            /* Force single column on smaller screens, reduce gap */
-            grid-template-columns: 1fr;
-            gap: 15px;
-        }
-
-        .card:hover {
-            /* Tone down the hover translation slightly on touch devices */
-            transform: translateY(-4px) scale(1.01);
-        }
+        .grid { grid-template-columns: 1fr; }
+        nav { padding: 0.5rem; }
+        .hero { padding: 3rem 1rem; }
     }
 </style>
 </head>
@@ -140,45 +196,153 @@
 
 <nav>
     <a href="#human">Human</a>
-    <a href="#multi">Multi</a>
+    <a href="#multi">Multi-Lingual</a>
     <a href="#dl">LLM DL</a>
+    <a href="#dl_big">Large Data</a>
     <a href="#prediction">Prediction</a>
-    <a href="#extra">Extra</a>
+    <a href="#prediction2">Embeddings</a>
+    <a href="#extra">Advanced</a>
+    <a href="#caps">Caps Exp</a>
 </nav>
 
-<div id="content"></div>
+<header class="hero">
+    <h1>LLM vs Human Analysis Dashboard</h1>
+  <p>A comprehensive visual exploration of all outputs from our project. Due to space limits, we displayed only a few in the documentation all remaining graphs are available here. <b>Every visualization is a direct output from our code written from scratch.</b></p>
+  <br>
+ <h2> Click on any figure to enlarge.</h2>
+</header>
+
+<main id="content"></main>
+
+<div id="lightbox" onclick="closeLightbox()">
+    <span id="lightbox-close">&times;</span>
+    <img id="lightbox-img" src="" alt="Full screen image">
+</div>
+
+<footer>
+    <div style="text-align: center; padding: 3rem; color: #475569; border-top: 1px solid #e2e8f0; margin-top: 2rem;">
+        <p>&copy; 2026  Click on any figure to enlarge.</p>
+    </div>
+</footer>
 
 <script>
 const sections = [
-    { id: "human", title: "Human Analysis", folder: "outputs/human_analysis_output", count: 5 },
-    { id: "multi", title: "Multi-Language Analysis", folder: "outputs/human_analysis_multi_laug", count: 8 },
-    { id: "dl", title: "LLM Dependency Length & Tree Depth", folder: "outputs/llm_dl_td", count: 3 },
-    { id: "dl_big", title: "LLM Large Dataset", folder: "outputs/llm_dl_td_bigdataset", count: 3 },
-    { id: "prediction", title: "LLM Prediction Without Embedding", folder: "outputs/llm_prediction_wthout_innerembading", count: 4 },
-    { id: "prediction2", title: "LLM Prediction With Embedding", folder: "outputs/llm_prediction_wth_innerembading", count: 5 },
-    { id: "extra", title: "LLM Advanced Metrics", folder: "outputs/llm_analysis_more_parameters", count: 3 },
-    { id: "caps", title: "Caps Experiment", folder: "outputs/LLM_ANALYSIS_ONLY_FIRSTLETTER_CAPS", count: 4 }
+    { 
+        id: "human", 
+        title: "Human Analysis Baseline", 
+        folder: "outputs/human_analysis_output", 
+        count: 5, 
+        desc: "Shows the starting point by looking at normal text written by humans, specifically how long and complicated our sentences naturally get." 
+    },
+    { 
+        id: "multi", 
+        title: "Multi-Language Analysis", 
+        folder: "outputs/human_analysis_multi_laug", 
+        count: 8, 
+        desc: "Compares several different languages to see how sentence structure changes from one language to another." 
+    },
+    { 
+        id: "dl", 
+        title: "LLM Dependency Length & Tree Depth", 
+        folder: "outputs/llm_dl_td", 
+        count: 3, 
+        desc: "Looks at how well AI models understand sentence structure and compares how complex AI sentences are compared to human ones." 
+    },
+    { 
+        id: "dl_big", 
+        title: "LLM Analysis (Large Dataset)", 
+        folder: "outputs/llm_dl_td_bigdataset", 
+        count: 3, 
+        desc: "Tests a massive amount of AI-generated text to find clear patterns and rare mistakes in its grammar." 
+    },
+    { 
+        id: "prediction", 
+        title: "Prediction Without Inner Embedding", 
+        folder: "outputs/llm_prediction_wthout_innerembading", 
+        count: 4, 
+        desc: "Checks how well the AI guesses the next word using just basic information, without any deep context." 
+    },
+    { 
+        id: "prediction2", 
+        title: "Prediction With Inner Embedding", 
+        folder: "outputs/llm_prediction_wth_innerembading", 
+        count: 5, 
+        desc: "Checks how much the AI improves when it uses deeper, underlying context to understand the meaning of words." 
+    },
+    { 
+        id: "extra", 
+        title: "Advanced Model Metrics", 
+        folder: "outputs/llm_analysis_more_parameters", 
+        count: 3, 
+        desc: "Looks closer at background AI settings, like what parts of a sentence the AI focuses on the most while generating text." 
+    },
+    { 
+        id: "caps", 
+        title: "Capitalization Experiment", 
+        folder: "outputs/LLM_ANALYSIS_ONLY_FIRSTLETTER_CAPS", 
+        count: 4, 
+        desc: "Tests if the AI gets confused when we change the text format, like making only the first letters of words capitalized." 
+    }
 ];
+
+
 
 const container = document.getElementById("content");
 
 sections.forEach(sec => {
-    let html = `<div class="section" id="${sec.id}">
-        <h2>${sec.title}</h2>
-        <div class="grid">`;
+    let html = `
+    <section class="section" id="${sec.id}">
+        <div class="section-header">
+            <h2>${sec.title}</h2>
+            <p>${sec.desc}</p>
+        </div>
+        <div class="grid">
+    `;
 
     for (let i = 1; i <= sec.count; i++) {
+        const imgSrc = `${sec.folder}/Figure_${i}.webp`;
+        const fallbackSrc = `${sec.folder}/Figure_${i}.png`;
+        
         html += `
         <div class="card">
-            <img src="${sec.folder}/Figure_${i}.webp"
-                 onerror="this.src='${sec.folder}/Figure_${i}.png'"
-                 alt="${sec.title} - Figure ${i}">
-            <div class="caption">Figure ${i}</div>
-        </div>`;
+            <div class="image-wrapper">
+                <img src="${imgSrc}" 
+                     onerror="this.src='${fallbackSrc}'" 
+                     alt="${sec.title} - Figure ${i}"
+                     loading="lazy"
+                     onclick="openLightbox(this.src)">
+            </div>
+            <div class="card-content">
+                <h3 class="card-title">Figure ${i}</h3>
+             
+            </div>
+        </div>
+        `;
     }
 
-    html += `</div></div>`;
+    html += `</div></section>`;
     container.innerHTML += html;
+});
+
+const lightbox = document.getElementById('lightbox');
+const lightboxImg = document.getElementById('lightbox-img');
+
+function openLightbox(src) {
+    lightbox.style.display = 'flex';
+    lightboxImg.src = src;
+    document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox() {
+    lightbox.style.display = 'none';
+    lightboxImg.src = '';
+    document.body.style.overflow = 'auto';
+}
+
+document.addEventListener('keydown', function(event) {
+    if (event.key === "Escape") {
+        closeLightbox();
+    }
 });
 </script>
 
