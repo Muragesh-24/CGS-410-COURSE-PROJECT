@@ -571,7 +571,9 @@
 
         <section class="section">
             <h2> Step 2: Prediction Difficulty (Surprisal)</h2>
-            <p>Analyzes how "surprising" or difficult it was for the model to predict each token based on the previous context.</p>
+            <p>Analyzes how "surprising" or difficult it was for the model to predict each token based on the previous context.
+                <b>You can observe the level of surprisal for first word is mostly high , then if you type a ambiguous word then aagain surprisal will increase , for example you type "the dog is studying" , you can observe the surprisal of studying will be high</b>
+            </p>
             <div id="surprisal" class="tokens-wrapper"></div>
             <div class="legend">
                 <span><i class="dot" style="background: var(--success)"></i> Low (Expected)</span>
