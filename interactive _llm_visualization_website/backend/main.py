@@ -10,7 +10,11 @@ CORS(app)
 
 print("Loading GPT-2...")
 tokenizer = GPT2Tokenizer.from_pretrained("gpt2")
-model = GPT2LMHeadModel.from_pretrained("gpt2", attn_implementation="eager")
+# model = GPT2LMHeadModel.from_pretrained("gpt2", attn_implementation="eager")
+model = GPT2LMHeadModel.from_pretrained(
+    "gpt2-medium",
+    attn_implementation="eager"
+)
 model.eval()
 print("Model ready!")
 

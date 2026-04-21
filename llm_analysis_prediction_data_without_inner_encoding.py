@@ -10,8 +10,8 @@ import os
 # ============================================================
 
 MODEL_NAME = "gpt2"
-INPUT_CSV = "data/synthetic_surprisal_dataset_10000.csv"
-OUTPUT_CSV = "synthetic_sentences_with_predictions.csv"
+INPUT_CSV = "data/synthetic_sentences_10000_simple_depths.csv"
+OUTPUT_CSV = "synthetic_sentences_with_prediction.csv"
 BATCH_SIZE = 32   # reduce to 16 if memory issues
 SEED = 42
 

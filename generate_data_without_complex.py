@@ -1,51 +1,91 @@
 import random
 import pandas as pd
 
-# Core components to build sentences
-subjects = ["The boy", "The girl", "The dog", "The cat", "The teacher", "The student"]
-verbs = ["saw", "chased", "liked", "helped", "scolded", "admired"]
-objects = ["the dog", "the cat", "the boy", "the girl", "the teacher", "the student"]
-actions = ["runs fast", "is barking", "is studying", "is sleeping", "jumps high", "is reading"]
+random.seed(42)
+
+# Core components (same style, slightly expanded for diversity)
+subjects = [
+    "The boy", "The girl", "The dog", "The cat", "The teacher", "The student",
+    "The scientist", "The doctor", "The artist", "The player"
+]
+
+verbs = [
+    "saw", "chased", "liked", "helped", "scolded", "admired",
+    "followed", "met", "called", "watched"
+]
+
+objects = [
+    "the dog", "the cat", "the boy", "the girl", "the teacher",
+    "the student", "the scientist", "the doctor", "the artist"
+]
+
+actions = [
+    "runs fast", "is barking", "is studying", "is sleeping",
+    "jumps high", "is reading", "is laughing", "is walking"
+]
 
 def generate_sentence(depth):
     """
-    Generates a single English sentence with a given embedding depth.
-    Depth 0 → simple sentence: "The dog runs fast."
-    Depth 1 → single relative clause: "The dog that the cat chased runs fast."
-    Depth n → nested relative clauses
+    Simple chaining structure (NO complex embedding)
+    Example:
+    Depth 2 → The dog that the cat chased that the boy saw runs fast.
     """
-    # Start with the main subject
     main_subject = random.choice(subjects)
     main_action = random.choice(actions)
 
     if depth == 0:
         return f"{main_subject} {main_action}."
-    
-    # Build nested relative clauses
-    clause = f"{main_subject}"
-    for d in range(depth):
+
+    clause = main_subject
+    for _ in range(depth):
         obj = random.choice(objects)
         verb = random.choice(verbs)
         clause = f"{clause} that {obj} {verb}"
-    
+
     return f"{clause} {main_action}."
 
-# Decide number of sentences per depth
-depths = [0,1,2,3,4,5,6,7,8]
-sentences_per_depth = [40, 40, 40, 40, 30, 25, 25, 20, 20]  # total ~280
+# 10,000 sentence distribution (balanced but slightly tapered)
+depth_distribution = {
+    0: 1500,
+    1: 1500,
+    2: 1500,
+    3: 1200,
+    4: 1100,
+    5: 900,
+    6: 800,
+    7: 700,
+    8: 800   # total = 10,000
+}
 
 all_sentences = []
-for depth, n_sentences in zip(depths, sentences_per_depth):
-    for _ in range(n_sentences):
+seen = set()
+
+for depth, n_sentences in depth_distribution.items():
+    count = 0
+    attempts = 0
+
+    while count < n_sentences and attempts < n_sentences * 20:
         sentence = generate_sentence(depth)
-        all_sentences.append({"sentence": sentence, "depth": depth})
+        attempts += 1
+
+        # Avoid duplicates
+        if sentence not in seen:
+            seen.add(sentence)
+            all_sentences.append({
+                "sentence": sentence,
+                "depth": depth
+            })
+            count += 1
 
 # Convert to DataFrame
 df = pd.DataFrame(all_sentences)
 
-# Shuffle to randomize order
+# Shuffle
 df = df.sample(frac=1, random_state=42).reset_index(drop=True)
 
-# Save to CSV
-df.to_csv("synthetic_sentences_depths.csv", index=False)
-print("Generated ~300 sentences across multiple depths and saved to 'synthetic_sentences_depths.csv'")
+# Save
+df.to_csv("synthetic_sentences_10000_simple_depths.csv", index=False)
+
+print("Generated dataset size:", len(df))
+print(df["depth"].value_counts().sort_index())
+print("Saved to 'synthetic_sentences_10000_simple_depths.csv'")
