@@ -35,7 +35,7 @@
 ##############################-------------------------------------------dataset from kaggle----------------------------############################
 import pandas as pd
 
-df = pd.read_csv("data/AIGTxt_dataset.csv", encoding='latin1')  # or 'ISO-8859-1'
+df = pd.read_csv("../data/AIGTxt_dataset.csv", encoding='latin1')  # or 'ISO-8859-1'
 
 sentences = df["ChatGPT-Generated"].tolist()  
 print("Total sentences:", len(sentences))

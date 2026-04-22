@@ -104,11 +104,11 @@ def tree_height(sentence):
 # =============================================================================
 
 languages = {
-    "English": "data/en_ewt-ud-dev.conllu.txt",
-    "French": "data/fr_gsd-ud-dev.conllu",
-    "Hindi": "data/hi_hdtb-ud-dev.conllu",
-    "Marathi": "data/mr_ufal-ud-train.conllu",
-    "Spanish": "data/es_ancora-ud-test.conllu",
+    "English": "../data/en_ewt-ud-dev.conllu.txt",
+    "French": "../data/fr_gsd-ud-dev.conllu",
+    "Hindi": "../data/hi_hdtb-ud-dev.conllu",
+    "Marathi": "../data/mr_ufal-ud-train.conllu",
+    "Spanish": "../data/es_ancora-ud-test.conllu",
 }
 
 results = {}

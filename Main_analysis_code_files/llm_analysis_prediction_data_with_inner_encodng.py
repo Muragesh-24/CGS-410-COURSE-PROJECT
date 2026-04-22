@@ -15,7 +15,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 model.to(device)
 
 # Load your CSV
-df = pd.read_csv("data/synthetic_sentences_recursive_depths.csv")
+df = pd.read_csv("../data/synthetic_sentences_recursive_depths.csv")
 
 def compute_surprisal(sentence):
     """

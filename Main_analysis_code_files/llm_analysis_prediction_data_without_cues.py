@@ -472,7 +472,7 @@ import os
 # ============================================================
 
 MODEL_NAME = "gpt2"
-INPUT_CSV = "data/synthetic_sentences_recursive_depths_10000_with_cues.csv"
+INPUT_CSV = "../data/synthetic_sentences_recursive_depths_10000_without_cues.csv"
 OUTPUT_CSV = "synthetic_sentences_with_predictions_with_cues.csv"
 BATCH_SIZE = 32   # reduce to 16 if memory issues
 SEED = 42

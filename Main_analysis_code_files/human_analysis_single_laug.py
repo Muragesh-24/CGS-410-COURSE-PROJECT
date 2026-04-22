@@ -82,7 +82,7 @@ def analyze_dependency_lengths(file_path):
 # MAIN ANALYSIS: Dependency Length Statistics
 # ============================================================================
 
-file_path = "data/en_ewt-ud-dev.conllu.txt"
+file_path = "../data/en_ewt-ud-dev.conllu.txt"
 english = analyze_dependency_lengths(file_path)
 
 # Print basic statistics for dependency lengths
