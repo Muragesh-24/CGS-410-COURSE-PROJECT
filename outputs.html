@@ -229,44 +229,44 @@
 const sections = [
     { 
         id: "human", 
-        title: "Human Analysis Baseline", 
+        title: "Human Analysis Baseline (single Language)", 
         folder: "outputs/human_analysis_output", 
         count: 5, 
         desc: "Shows the starting point by looking at normal text written by humans, specifically how long and complicated our sentences naturally get." 
     },
     { 
         id: "multi", 
-        title: "Multi-Language Analysis", 
+        title: "Multi Language Analysis (Human analysis)", 
         folder: "outputs/human_analysis_multi_laug", 
         count: 8, 
         desc: "Compares several different languages to see how sentence structure changes from one language to another." 
     },
-    { 
-        id: "dl", 
-        title: "LLM Dependency Length & Tree Depth", 
-        folder: "outputs/llm_dl_td", 
-        count: 3, 
-        desc: "Looks at how well AI models understand sentence structure and compares how complex AI sentences are compared to human ones." 
-    },
+    // { 
+    //     id: "dl", 
+    //     title: "LLM Dependency Length & Tree Depth", 
+    //     folder: "outputs/llm_dl_td", 
+    //     count: 3, 
+    //     desc: "Looks at how well AI models understand sentence structure and compares how complex AI sentences are compared to human ones." 
+    // },
     { 
         id: "dl_big", 
-        title: "LLM Analysis (Large Dataset)", 
+ title: "LLM Dependency Length & Tree Depth", 
         folder: "outputs/llm_dl_td_bigdataset", 
-        count: 3, 
+        count: 4, 
         desc: "Tests a massive amount of AI-generated text to find clear patterns and rare mistakes in its grammar." 
     },
     { 
         id: "prediction", 
         title: "Prediction Without Inner Embedding", 
         folder: "outputs/llm_prediction_wthout_innerembading", 
-        count: 4, 
+        count: 7, 
         desc: "Checks how well the AI guesses the next word using just basic information, without any deep context." 
     },
     { 
         id: "prediction2", 
         title: "Prediction With Inner Embedding", 
         folder: "outputs/llm_prediction_wth_innerembading", 
-        count: 5, 
+        count: 7, 
         desc: "Checks how much the AI improves when it uses deeper, underlying context to understand the meaning of words." 
     },
     { 
@@ -279,8 +279,8 @@ const sections = [
     { 
         id: "caps", 
         title: "Capitalization Experiment", 
-        folder: "outputs/LLM_ANALYSIS_ONLY_FIRSTLETTER_CAPS", 
-        count: 4, 
+        folder: "outputs/10000ds", 
+        count: 9, 
         desc: "Tests if the AI gets confused when we change the text format, like making only the first letters of words capitalized." 
     }
 ];
