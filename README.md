@@ -4,252 +4,123 @@
 ```text
 CGS-410-COURSE-PROJECT/
 │
-├── data/                          # All datasets used in the project
-│   ├── AIGTxt_dataset.csv
-│   ├── de_hdt-ud-dev.conllu
-│   ├── en_ewt-ud-dev.conllu.txt
-│   ├── es_ancora-ud-test.conllu
-│   ├── fr_gsd-ud-dev.conllu
-│   ├── hi_hdtb-ud-dev.conllu
-│   ├── mr_ufal-ud-train.conllu
-│   ├── llm_generated.txt
-│   ├── synthetic_sentences_depths.csv
-│   ├── synthetic_sentences_inner_depths.csv
-│   └── synthetic_sentences_recursive_depths.csv
+├── data/
+│ ├── AIGTxt_dataset.csv
+│ ├── de_hdt-ud-dev.conllu
+│ ├── en_ewt-ud-dev.conllu.txt
+│ ├── es_ancora-ud-test.conllu
+│ ├── fr_gsd-ud-dev.conllu
+│ ├── hi_hdtb-ud-dev.conllu
+│ ├── mr_ufal-ud-train.conllu
+│ ├── llm_generated.txt
+│ ├── synthetic_sentences_10000_simple_depths.csv
+│ ├── synthetic_sentences_recursive_depths_10000_without_cues.csv
+│ └── synthetic_surprisal_dataset_10000.csv
 │
-├── interactive_llm_visualization_website/   # Web interface for interactive analysis
-│   └── backend/
-│       ├── main.py               # Backend server logic (API handling, processing)
-│       └── req.txt               # Backend dependencies
+├── DataScripts_for_llm_pridiction/
+│ ├── generate_data_without_complex.py
+│ ├── generate_data_with_inner_complex.py
+│ └── generate_data_with_inner_complex_without_removing_cues.py
 │
-├── outputs/                      # All generated results and visualizations
-│   ├── human_analysis_output/
-│   ├── human_analysis_multi_laug/
-│   ├── llm_analysis_more_parameters/
-│   ├── LLM_ANALYSIS_ONLY_FIRSTLETTER_CAPS/
-│   ├── llm_dl_td/
-│   ├── llm_dl_td_bigdataset/
-│   ├── llm_prediction_wthout_innerembading/
-│   └── llm_prediction_wth_innerembading/
+├── Main_analysis_code_files/
+│ ├── human_analysis_multi_laug.py
+│ ├── human_analysis_single_laug.py
+│ ├── llm_analysis_DL_and_TH.py
+│ ├── llm_analysis_prediction_data_without_cues.py
+│ ├── llm_analysis_prediction_data_without_inner_encoding.py
+│ └── llm_analysis_prediction_data_with_inner_encodng.py
 │
-├── index.html                   # Main UI entry (visualization frontend)
-├── outputs.html                 # Displays generated results
+├── interactive_llm_visualization_website/
+│ └── backend/
+│ ├── main.py
+│ └── req.txt
 │
-├── generate_data_without_complex.py
-├── generate_data_with_inner_complex.py
-├── human_analysis.py
-├── human_analysis_multi_laug.py
-├── llm_analysis_DL_and_TH.py
-├── llm_analysis_prediction_data_without_inner_encoding.py
-├── llm_analysis_prediction_data_with_inner_encodng.py
-├── llm_analysis_with_more_parameters.py
+├── outputs/
+│ ├── llm_analysis_more_parameters/
+│ ├── LLM_ANALYSIS_ONLY_FIRSTLETTER_CAPS_small_dataset/
+│ ├── llm_dl_td_small_dataset/
+│ ├── Outputs_for_human_analysis_multi_laug/
+│ ├── Outputs_for_human_analysis_single_laug/
+│ ├── Outputs_for_llm_dl_td_Using_AIGTxt_dataset/
+│ ├── Outputs_for_LLM_prediction_without_cues/
+│ ├── Outputs_for_llm_prediction_wthout_innerembading/
+│ ├── Outputs_for_llm_prediction_wth_innerembading/
+│ └── synthetic_sentences_with_prediction.csv
 │
-├── README.md                    # Detailed project explanation
+├── index.html
+├── outputs.html
+├── requirements.txt
 ├── LICENSE
-├── CNAME                        # ignore it
-├── doc.txt                      # ignore it
-└── req.txt                      # Project dependencies
+├── CNAME
+└── README.md
 ```
-<h1>From Structure to Prediction: Memory Constraints and Dependency Length in Human Language and LLMs</h1>
 
-<h2>Project Overview</h2>
+---
 
-<p>
-This project investigates whether <b>transformer-based Large Language Models (LLMs)</b> exhibit structural patterns similar to human language under memory constraints. 
-We study whether LLMs follow the <b>Dependency Length Minimization (DLM)</b> principle and whether syntactic complexity increases prediction difficulty measured using surprisal.
-</p>
+##  Directory Overview
 
-<p>
-Human languages tend to minimize dependency length due to cognitive memory limitations. This project tests whether similar constraints emerge in LLM-generated text.
-</p>
+###  `data/`
+Contains all datasets used in the project:
+- Human language corpora (Universal Dependencies)
+- LLM-generated text samples
+- Synthetic datasets for controlled experiments (depth, embedding, surprisal)
 
-<h2>Research Questions</h2>
+ Acts as the **primary input source**
 
-<ul>
-<li>Do LLMs exhibit dependency length patterns similar to human language?</li>
-<li>Does increasing syntactic hierarchy increase prediction difficulty?</li>
-<li>Is there a correlation between dependency length and surprisal?</li>
-<li>Do LLMs show evidence of memory constraints similar to humans?</li>
-</ul>
+---
 
-<h2>Project Structure</h2>
+###  `DataScripts_for_llm_pridiction/`
+Scripts used to generate controlled datasets:
+- Create sentences with increasing syntactic complexity
+- Generate variants with/without structural cues
 
-<h3>1. Human Corpus Analysis</h3>
+ Used for **controlled linguistic experiments**
 
-<p>We analyze dependency structures from human language datasets to establish a baseline.</p>
+---
 
-<b>Metrics:</b>
+###  `Main_analysis_code_files/`
+Core research and analysis logic:
+- Human dependency length and tree structure analysis
+- LLM structural analysis (DL, tree height)
+- Surprisal and prediction difficulty experiments
+- Correlation and statistical analysis
 
-<ul>
-<li>Average Dependency Length (ADL)</li>
-<li>Maximum Dependency Length</li>
-<li>Dependency length distribution</li>
-<li>Sentence length vs dependency length</li>
-</ul>
+ Represents the **main experimental pipeline**
 
-<b>Dataset:</b>
+---
 
-<ul>
-<li>Universal Dependencies English Treebank</li>
-</ul>
+###  `interactive_llm_visualization_website/`
+Interactive system for real-time analysis:
+- Flask backend for:
+  - Token-level surprisal
+  - Prediction probabilities
+  - Attention visualization
 
-<hr>
+ Enables **interactive exploration of model behavior**
 
-<h3>2. Controlled Sentence Generation</h3>
+---
 
-<p>
-We generate sentences with controlled syntactic complexity to test how increasing structure affects processing difficulty.
-</p>
+###  `outputs/`
+All experiment results and visualizations:
+- Graphs (DL, surprisal trends, comparisons)
+- CSV result files
+- Structured outputs for each experiment
 
-<b>Increasing sentence length:</b>
+ Serves as the **final results layer**
 
-<pre>
-The dog is barking.
-The dog near a house is barking.
-The dog near a house on the street is barking.
-</pre>
+---
 
-<b>Increasing syntactic embedding:</b>
+###  Root Files
+- `index.html` → Interactive webpage
+- `outputs.html` → Visualization dashboard
+- `requirements.txt` → Python dependencies
+- `README.md` → Documentation
+- `CNAME` → Custom domain configuration
 
-<pre>
-The dog that the cat chased is barking.
-The dog that the cat that the boy saw chased is barking.
-The dog that the cat that the boy that the teacher scolded saw chased is barking.
-</pre>
+---
 
-<hr>
+##  Workflow Overview
 
-<h3>3. LLM Text Generation</h3>
-
-<p>Text is generated using LLM prompts designed to produce different syntactic complexity.</p>
-
-<b>Example prompts:</b>
-
-<ul>
-<li>Write simple sentences</li>
-<li>Write complex academic sentences</li>
-<li>Write sentences with nested clauses</li>
-<li>Write conversational text</li>
-</ul>
-
-<hr>
-
-<h3>4. Dependency Parsing of LLM Text</h3>
-
-<p>Generated text is parsed to extract syntactic relationships.</p>
-
-<pre>
-LLM text → Dependency parser → Dependency trees → DL calculation
-</pre>
-
-<hr>
-
-<h3>5. Surprisal Analysis</h3>
-
-<b>Metrics:</b>
-
-<ul>
-<li>Token surprisal</li>
-<li>Sentence perplexity</li>
-<li>Prediction entropy</li>
-</ul>
-
-<p>Purpose: Measure prediction difficulty as syntactic complexity increases.</p>
-
-<hr>
-
-<h3>6. Memory Constraint Experiment</h3>
-
-<p>We test whether increasing syntactic depth increases processing difficulty.</p>
-
-<b>Hypothesis:</b>
-
-<ul>
-<li>Higher embedding → Higher dependency length</li>
-<li>Higher embedding → Higher surprisal</li>
-<li>Higher embedding → Higher prediction difficulty</li>
-</ul>
-
-<hr>
-
-<h3>7. Correlation Analysis</h3>
-
-<b>Correlations tested:</b>
-
-<ul>
-<li>Dependency Length vs Surprisal</li>
-<li>Sentence Length vs Surprisal</li>
-<li>Embedding Depth vs Surprisal</li>
-</ul>
-
-<hr>
-
-<h3>8. Human vs LLM Comparison</h3>
-
-<b>Metrics compared:</b>
-
-<ul>
-<li>Average dependency length</li>
-<li>Maximum dependency length</li>
-<li>Dependency distributions</li>
-<li>Surprisal trends</li>
-</ul>
-
-<hr>
-
-<h3>9. Visualization</h3>
-
-<b>Plots generated:</b>
-
-<ul>
-<li>Dependency length histograms</li>
-<li>Surprisal vs embedding depth</li>
-<li>Sentence length vs dependency length</li>
-<li>Human vs LLM comparison</li>
-</ul>
-
-<hr>
-
-<h3>10. Conclusions</h3>
-
-<p>We summarize whether:</p>
-
-<ul>
-<li>LLMs minimize dependency length</li>
-<li>Hierarchy increases prediction difficulty</li>
-<li>LLMs show human-like memory constraints</li>
-</ul>
-
-<hr>
-
-<h2>Methods Used</h2>
-
-<ul>
-<li>Dependency parsing</li>
-<li>Statistical analysis</li>
-<li>Correlation analysis</li>
-<li>Surprisal analysis</li>
-</ul>
-
-<h2>Tools</h2>
-
-<ul>
-<li>Python</li>
-<li>spaCy / Stanza</li>
-<li>Matplotlib</li>
-<li>NumPy</li>
-<li>Transformer models</li>
-</ul>
-
-<h2>Future Work</h2>
-
-<ul>
-<li>Multi-language comparison</li>
-<li>More LLM models</li>
-<li>Random baseline comparison</li>
-<li>Tree depth analysis</li>
-<li>Attention pattern analysis</li>
-</ul>
 
 <h2>Collaborators</h2>
 
