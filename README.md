@@ -17,12 +17,21 @@ Focus areas:
 
 ---
 
-##  Live Demo
+##  Live Web tool & Outputs
+###  This is a web tool built by us from the scratch to visualize the working of llm and also a collection of all the outputs and visualizations that we have generated as part of our project(ie outputs of our code).
 
-*  **Main Interface:** https://cgs.outputs.muragesh.tech
+1) **Web Tool:** This is an interactive web tool that display the working of llm using a gpt 2 model , it show how a llm tokenizes a sentence, how it generates the next token and how the surprisal changes with each token. It also shows the attention weights of the model and how it captures long distance dependencies. You can try it out with your own sentences and see how the model responds.
+*  **Web Tool:** https://cgs.outputs.muragesh.tech
+
+<div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem;">
+<img src="outputs/Web_tool_demo/Screenshot 2026-04-25 044027.png" alt="Website Screenshot" width="400">
+<img src="outputs/Web_tool_demo/Screenshot 2026-04-25 044046.png" alt="Website Screenshot" width="400">
+<img src="outputs/Web_tool_demo/Screenshot 2026-04-25 044100.png" alt="Website Screenshot" width="400">
+<img src="outputs/Web_tool_demo/Screenshot 2026-04-25 044128.png" alt="Website Screenshot" width="400">
+</div>
+
+2) **Outputs & Visualizations:** This is a collection of all the outputs and visualizations that we have generated as part of our project. It includes graphs and other results from our experiments. You can explore them in detail and see how they support our analysis and conclusions.
 *  **Outputs & Visualizations:** https://cgs.outputs.muragesh.tech/outputs.html
-
-
 ---
 
 ## 📁 Project Structure
