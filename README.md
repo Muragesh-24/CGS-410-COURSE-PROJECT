@@ -1,132 +1,132 @@
+# CGS-410 COURSE PROJECT
 
-## 📁 Project Structure
+## Human vs LLM Structural Analysis
 
-```text
+---
+
+##  About
+
+This repository contains code, datasets, and outputs for analyzing structural patterns in human language and Large Language Models (LLMs).
+
+Focus areas:
+
+* Dependency Length (DL)
+* Tree structure (hierarchy)
+* Surprisal (prediction difficulty)
+* Human vs LLM comparison
+
+---
+
+##  Live Demo
+
+*  **Main Interface:** https://cgs.outputs.muragesh.tech
+*  **Outputs & Visualizations:** https://cgs.outputs.muragesh.tech/outputs.html
+
+
+---
+
+## 📂 Repository Structure
+
+```id="l5y2xf"
 CGS-410-COURSE-PROJECT/
 │
 ├── data/
-│ ├── AIGTxt_dataset.csv
-│ ├── de_hdt-ud-dev.conllu
-│ ├── en_ewt-ud-dev.conllu.txt
-│ ├── es_ancora-ud-test.conllu
-│ ├── fr_gsd-ud-dev.conllu
-│ ├── hi_hdtb-ud-dev.conllu
-│ ├── mr_ufal-ud-train.conllu
-│ ├── llm_generated.txt
-│ ├── synthetic_sentences_10000_simple_depths.csv
-│ ├── synthetic_sentences_recursive_depths_10000_without_cues.csv
-│ └── synthetic_surprisal_dataset_10000.csv
+│   ├── AIGTxt_dataset.csv
+│   ├── en_ewt-ud-dev.conllu.txt
+│   ├── es_ancora-ud-test.conllu
+│   ├── fr_gsd-ud-dev.conllu
+│   ├── hi_hdtb-ud-dev.conllu
+│   ├── mr_ufal-ud-train.conllu
+│   ├── de_hdt-ud-dev.conllu
+│   ├── llm_generated.txt
+│   ├── synthetic_sentences_10000_simple_depths.csv
+│   ├── synthetic_sentences_recursive_depths_10000_without_cues.csv
+│   └── synthetic_surprisal_dataset_10000.csv
 │
 ├── DataScripts_for_llm_pridiction/
-│ ├── generate_data_without_complex.py
-│ ├── generate_data_with_inner_complex.py
-│ └── generate_data_with_inner_complex_without_removing_cues.py
+│   ├── generate_data_without_complex.py
+│   ├── generate_data_with_inner_complex.py
+│   └── generate_data_with_inner_complex_without_removing_cues.py
 │
 ├── Main_analysis_code_files/
-│ ├── human_analysis_multi_laug.py
-│ ├── human_analysis_single_laug.py
-│ ├── llm_analysis_DL_and_TH.py
-│ ├── llm_analysis_prediction_data_without_cues.py
-│ ├── llm_analysis_prediction_data_without_inner_encoding.py
-│ └── llm_analysis_prediction_data_with_inner_encodng.py
+│   ├── humanSurprisal.py
+│   ├── human_analysis_multi_laug.py
+│   ├── human_analysis_single_laug.py
+│   ├── llm_analysis_DL_and_TH.py
+│   ├── llm_analysis_prediction_data_without_cues.py
+│   ├── llm_analysis_prediction_data_without_inner_encoding.py
+│   ├── llm_analysis_prediction_data_with_inner_encodng.py
+│   ├── llm_vs_human_dl.py
+│   ├── multimodel.py
+│   ├── human_vs_llm_dl_summary.csv
+│   └── multi_model_attention_outputs/
+│       ├── attention_depth_summary.csv
+│       └── multi_model_surprisal_results.csv
 │
 ├── interactive_llm_visualization_website/
-│ └── backend/
-│ ├── main.py
-│ └── req.txt
+│   └── backend/
+│       ├── main.py
+│       └── req.txt
 │
 ├── outputs/
-│ ├── llm_analysis_more_parameters/
-│ ├── LLM_ANALYSIS_ONLY_FIRSTLETTER_CAPS_small_dataset/
-│ ├── llm_dl_td_small_dataset/
-│ ├── Outputs_for_human_analysis_multi_laug/
-│ ├── Outputs_for_human_analysis_single_laug/
-│ ├── Outputs_for_llm_dl_td_Using_AIGTxt_dataset/
-│ ├── Outputs_for_LLM_prediction_without_cues/
-│ ├── Outputs_for_llm_prediction_wthout_innerembading/
-│ ├── Outputs_for_llm_prediction_wth_innerembading/
-│ └── synthetic_sentences_with_prediction.csv
+│   ├── humanV/
+│   │   └── (key result graphs: DL, surprisal, density, etc.)
+│   ├── multi_model_llm_surprisal_analysis/
+│   │   └── (final multi-model graphs)
+│   ├── Outputs_for_human_analysis_multi_laug/
+│   ├── Outputs_for_human_analysis_single_laug/
+│   ├── Outputs_for_llm_dl_td_Using_AIGTxt_dataset/
+│   ├── Outputs_for_LLM_prediction_without_cues/
+│   ├── Outputs_for_llm_prediction_wthout_innerembading/
+│   ├── Outputs_for_llm_prediction_wth_innerembading/
+│   └── (additional experiment outputs & CSV files)
 │
 ├── index.html
 ├── outputs.html
+├── Final_doc_Muragesh.pdf
+├── README.md
 ├── requirements.txt
-├── LICENSE
-├── CNAME
-└── README.md
+└── LICENSE
 ```
 
 ---
 
-##  Directory Overview
+##  How to Run
 
-###  `data/`
-Contains all datasets used in the project:
-- Human language corpora (Universal Dependencies)
-- LLM-generated text samples
-- Synthetic datasets for controlled experiments (depth, embedding, surprisal)
+```bash id="r9l0cb"
+pip install -r requirements.txt
+```
 
- Acts as the **primary input source**
+Run analysis scripts:
 
----
+```bash id="p0r9kv"
+cd Main_analysis_code_files
+python <script_name>.py
+```
 
-###  `DataScripts_for_llm_pridiction/`
-Scripts used to generate controlled datasets:
-- Create sentences with increasing syntactic complexity
-- Generate variants with/without structural cues
+Run backend:
 
- Used for **controlled linguistic experiments**
-
----
-
-###  `Main_analysis_code_files/`
-Core research and analysis logic:
-- Human dependency length and tree structure analysis
-- LLM structural analysis (DL, tree height)
-- Surprisal and prediction difficulty experiments
-- Correlation and statistical analysis
-
- Represents the **main experimental pipeline**
+```bash id="o3xj7s"
+cd interactive_llm_visualization_website/backend
+python main.py
+```
 
 ---
 
-###  `interactive_llm_visualization_website/`
-Interactive system for real-time analysis:
-- Flask backend for:
-  - Token-level surprisal
-  - Prediction probabilities
-  - Attention visualization
+##  Outputs
 
- Enables **interactive exploration of model behavior**
+All generated graphs, CSV files, and experiment results are stored in:
 
----
-
-###  `outputs/`
-All experiment results and visualizations:
-- Graphs (DL, surprisal trends, comparisons)
-- CSV result files
-- Structured outputs for each experiment
-
- Serves as the **final results layer**
+```id="v1a7hx"
+/outputs
+```
 
 ---
 
-###  Root Files
-- `index.html` → Interactive webpage
-- `outputs.html` → Visualization dashboard
-- `requirements.txt` → Python dependencies
-- `README.md` → Documentation
-- `CNAME` → Custom domain configuration
+##  Contributors
 
----
+* Muragesh Nyamagoud
+* Palak Meena
+* Kovid Saksham Lohia
+* Kajal Sankhla
 
-##  Workflow Overview
-
-
-<h2>Collaborators</h2>
-
-<ul>
-<li>Muragesh Channappa Nyamagoud</li>
-<li>Palak Meena</li>
-<li>Kovid Saksham Lohia</li>
-<li>Kajal Sankhla</li>
-</ul>
