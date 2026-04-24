@@ -89,6 +89,122 @@ CGS-410-COURSE-PROJECT/
 └── LICENSE
 ```
 
+# Human vs LLM Structural Analysis  
+
+---
+
+##  Project Overview
+
+This project investigates whether transformer-based Large Language Models (LLMs) exhibit structural patterns similar to human language.  
+
+The focus is on understanding how models handle:
+- **Dependency Length (DL)** — structural efficiency of sentences  
+- **Hierarchical complexity** — syntactic depth (e.g., center embedding)  
+- **Prediction difficulty** — measured using surprisal, perplexity, and entropy  
+
+We compare human language data with LLM-generated text to evaluate whether similar patterns emerge and whether they reflect true cognitive constraints or learned statistical behavior.
+
+---
+
+##  Data Used
+
+### 1. Human Language Data
+- Universal Dependencies (UD) datasets  
+- Multiple languages (e.g., English, Hindi, Spanish, French, German, Marathi)  
+- Provides ground truth syntactic structures  
+
+---
+
+### 2. Synthetic Datasets
+- Programmatically generated sentences  
+- Controlled variations:
+  - Increasing sentence length  
+  - Increasing embedding depth  
+  - Variants with reduced surface cues
+  - around 53000 sentences
+
+
+---
+
+### 3. LLM Data
+- Text generated using transformer models (e.g., GPT-2)  
+- Prompts designed to produce varying complexity  
+- Also includes AI-generated datasets for large-scale analysis
+- ~ 23000 sentences
+
+---
+
+##  Experiments Conducted
+
+### 1. Human Corpus Analysis
+- Measured dependency length across languages  
+- Analyzed:
+  - Average dependency length (ADL)  
+  - Distribution of dependencies  
+  - Sentence length vs dependency length  
+  - Tree height  
+
+---
+
+### 2. LLM Structural Analysis
+- Generated text from LLMs  
+- Parsed using dependency parsers  
+- Compared structural properties with human data  
+
+---
+
+### 3. Dependency Length Comparison
+- Human vs LLM comparison  
+- Checked whether LLMs follow **Dependency Length Minimization (DLM)**  
+
+---
+
+### 4. Surprisal Analysis
+- Measured prediction difficulty using:
+  - Token-level surprisal  
+  - Sentence perplexity  
+  - Entropy  
+- Evaluated how difficulty changes with sentence complexity
+- compared it for llm vs Human
+
+---
+
+### 5. Hierarchical Complexity Experiment
+- Tested increasing syntactic depth (center embedding)  
+- Observed effect on:
+  - Surprisal  
+  - Model prediction behavior  
+
+---
+
+### 6. Surface Cue Ablation
+- Removed cues like capitalization patterns  
+- Checked whether models rely on:
+  - True structure  
+  - Or shallow surface patterns  
+
+---
+
+### 7. Multi-Model Analysis
+- Compared behavior across multiple transformer models  
+- Evaluated consistency of observed patterns  
+
+---
+
+### 8. Attention-Based Analysis
+- Analyzed attention weights  
+- Checked whether models capture correct long-distance dependencies  
+
+---
+
+##  Goal
+
+To understand whether LLMs:
+- Truly model hierarchical structure  
+- Exhibit human-like memory constraints  
+- Or primarily rely on statistical patterns in data  
+
+---
 ---
 
 ##  How to Run
