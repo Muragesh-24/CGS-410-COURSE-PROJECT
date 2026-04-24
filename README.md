@@ -25,19 +25,27 @@ Focus areas:
 
 ---
 
-## 📂 Repository Structure
+## 📁 Project Structure
 
-```id="l5y2xf"
+```
 CGS-410-COURSE-PROJECT/
 │
 ├── data/
-│   ├── AIGTxt_dataset.csv
-│   ├── en_ewt-ud-dev.conllu.txt
-│   ├── es_ancora-ud-test.conllu
-│   ├── fr_gsd-ud-dev.conllu
-│   ├── hi_hdtb-ud-dev.conllu
-│   ├── mr_ufal-ud-train.conllu
-│   ├── de_hdt-ud-dev.conllu
+│   ├── Human_dependency_length/
+│   │   ├── de_hdt-ud-dev.conllu
+│   │   ├── en_ewt-ud-dev.conllu.txt
+│   │   ├── es_ancora-ud-test.conllu
+│   │   ├── fr_gsd-ud-dev.conllu
+│   │   ├── hi_hdtb-ud-dev.conllu
+│   │   └── mr_ufal-ud-train.conllu
+│   │
+│   ├── LLM_Dependency_Length/
+│   │   ├── AIGTxt_dataset.csv
+│   │   ├── french.csv
+│   │   ├── hindi.csv
+│   │   ├── kannadda.csv
+│   │   └── spanish.csv
+│   │
 │   ├── llm_generated.txt
 │   ├── synthetic_sentences_10000_simple_depths.csv
 │   ├── synthetic_sentences_recursive_depths_10000_without_cues.csv
@@ -53,15 +61,12 @@ CGS-410-COURSE-PROJECT/
 │   ├── human_analysis_multi_laug.py
 │   ├── human_analysis_single_laug.py
 │   ├── llm_analysis_DL_and_TH.py
+│   ├── llm_analysis_multi_laug_DL.py
 │   ├── llm_analysis_prediction_data_without_cues.py
 │   ├── llm_analysis_prediction_data_without_inner_encoding.py
 │   ├── llm_analysis_prediction_data_with_inner_encodng.py
 │   ├── llm_vs_human_dl.py
-│   ├── multimodel.py
-│   ├── human_vs_llm_dl_summary.csv
-│   └── multi_model_attention_outputs/
-│       ├── attention_depth_summary.csv
-│       └── multi_model_surprisal_results.csv
+│   └── multimodel.py
 │
 ├── interactive_llm_visualization_website/
 │   └── backend/
@@ -70,23 +75,34 @@ CGS-410-COURSE-PROJECT/
 │
 ├── outputs/
 │   ├── humanV/
-│   │   └── (key result graphs: DL, surprisal, density, etc.)
+│   │   ├── density.png
+│   │   ├── DL.png
+│   │   ├── human_vs_llm_dl_summary.csv
+│   │   ├── human_vs_llm_surprisal.png
+│   │   ├── max_surprisal.png
+│   │   └── sLLm.png
+│   │
+│   ├── llm_analysis_more_parameters/
+│   ├── LLM_ANALYSIS_ONLY_FIRSTLETTER_CAPS_small_dataset/
+│   ├── llm_dl_td_small_dataset/
+│   ├── llm_multilingual_dl_simple/
+│   ├── multi_model_attention_outputs/
 │   ├── multi_model_llm_surprisal_analysis/
-│   │   └── (final multi-model graphs)
 │   ├── Outputs_for_human_analysis_multi_laug/
 │   ├── Outputs_for_human_analysis_single_laug/
 │   ├── Outputs_for_llm_dl_td_Using_AIGTxt_dataset/
 │   ├── Outputs_for_LLM_prediction_without_cues/
 │   ├── Outputs_for_llm_prediction_wthout_innerembading/
 │   ├── Outputs_for_llm_prediction_wth_innerembading/
-│   └── (additional experiment outputs & CSV files)
+│   └── synthetic_sentences_with_prediction.csv
 │
 ├── index.html
 ├── outputs.html
-├── Final_doc_Muragesh.pdf
+├── muragesh_240669_finalD0c_cgs.pdf
 ├── README.md
 ├── requirements.txt
-└── LICENSE
+├── LICENSE
+└── CNAME
 ```
 
 # Human vs LLM Structural Analysis  
