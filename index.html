@@ -550,10 +550,12 @@
 
         <h1>🤖 LLM Thinking Explorer</h1>
         <div class="subtitle">This page helps you quickly see how the model reads and predicts your sentence.</div>
+        <div class="subtitle"><b>The portal dynamically computes outputs using a backend powered by GPT-2.
+For each input sentence, real model parameters like token surprisal, probabilities, K- best predictions and attention weights are extracted and visualized.</b></div>
     </header>
 
     <div class="input-group">
-        <input type="text" id="text-input" value="The dog that the cat chased is barking" placeholder="Enter a sentence to analyze...">
+        <input type="text" id="text-input" value="" placeholder="Enter a sentence to analyze...">
         <button id="analyze-btn" onclick="runAnalysis()">
             <span class="spinner" id="spinner"></span>
             <span id="btn-text">Analyze</span>
