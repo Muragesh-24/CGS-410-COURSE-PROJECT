@@ -1,0 +1,7 @@
+Random Baseline Surprisal Summary
+=================================
+Total sentences analyzed: 10001
+Average GPT-2 surprisal: 9.1088 bits
+Random baseline surprisal: 15.6170 bits
+Average gap: 6.5083 bits
+GPT-2 beats random in: 100.00% sentences
