@@ -86,8 +86,30 @@ CGS-410-COURSE-PROJECT/
 ---
 
 ##  About
+## Data Used
 
-This repository contains code, datasets, and outputs for analyzing structural patterns in human language and Large Language Models (LLMs).
+| Category | Dataset / File | Language | Quantity (sentences) | Purpose |
+|---|---|---:|---:|---|
+| Human corpus | `Human_dependency_length/de_hdt-ud-dev.conllu` | German | ~18,434 | Additional human corpus |
+| Human corpus | `Human_dependency_length/en_ewt-ud-dev.conllu.txt` | English | ~2,002 | Human dependency-length baseline |
+| Human corpus | `Human_dependency_length/es_ancora-ud-test.conllu` | Spanish | ~1,721 | Human dependency-length baseline |
+| Human corpus | `Human_dependency_length/hi_hdtb-ud-dev.conllu` | Hindi | ~1,659 | Human dependency-length baseline |
+| Human corpus | `Human_dependency_length/fr_gsd-ud-dev.conllu` | French | ~1,476 | Human dependency-length baseline |
+| Human corpus | `Human_dependency_length/mr_ufal-ud-train.conllu` | Marathi | ~373 | Human dependency-length baseline |
+| **Total (Human)** |  |  | **~25,665** |  |
+| LLM corpus | `LLM_Dependency_Length/AIGTxt_dataset.csv` | English | ~23,000 | LLM-generated dependency-length analysis |
+| LLM corpus | `LLM_Dependency_Length/french.csv` | French | 1,616 | LLM-generated multilingual comparison |
+| LLM corpus | `LLM_Dependency_Length/hindi.csv` | Hindi | 1,243 | LLM-generated multilingual comparison |
+| LLM corpus | `LLM_Dependency_Length/spanish.csv` | Spanish | 802 | LLM-generated multilingual comparison |
+| LLM corpus | `LLM_Dependency_Length/kannadda.csv` | Kannada | 280 | LLM-generated multilingual comparison |
+| LLM text | `llm_generated.txt` | English | 661 | LLM-generated text sample |
+| **Total (LLM)** |  |  | **~27,602** |  |
+| Synthetic | `synthetic_sentences_recursive_depths_10000_without_cues.csv` | English | 10,000 | Recursive-depth experiment without surface cues |
+| Synthetic | `synthetic_surprisal_dataset_10000.csv` | English | 10,000 | Surprisal and hierarchy experiment |
+| Synthetic | `synthetic_sentences_10000_simple_depths.csv` | English | 8,580 | Controlled depth / sentence-length experiment |
+| **Total (Synthetic)** |  |  | **28,580** |  |
+| **Grand Total** |  |  | **~81,847 sentences** |  |
+
 
 Focus areas:
 
