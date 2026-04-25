@@ -1,5 +1,7 @@
 # CGS-410 COURSE PROJECT
 
+*  **Web Tool:** https://cgs.outputs.muragesh.tech
+*  **Outputs & Visualizations:** https://cgs.outputs.muragesh.tech/outputs.html
 
 ## Human vs LLM Structural Analysis
 
