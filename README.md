@@ -88,6 +88,23 @@ CGS-410-COURSE-PROJECT/
 ---
 
 ##  About
+##  Experiments Conducted
+
+- Human Dependency Length Analysis (UD treebanks: English, Hindi, Marathi, Spanish, French)
+- LLM Dependency Length Analysis (generated text + dependency parsing (English, Hindi,Spanish, French))
+- Human vs LLM Comparison (dependency length patterns and distributions)
+- Controlled Sentence Generation (increasing syntactic depth and embedding)
+- Surprisal Analysis (token-level surprisal using GPT-2)
+- Perplexity and Entropy Analysis (prediction uncertainty metrics)
+- Depth vs Surprisal Experiment (effect of embedding depth on difficulty)
+- Surface Cue Removal Experiment (reduced cues to test structural sensitivity)
+- Correlation Analysis (DL vs surprisal, length vs surprisal, depth vs surprisal)
+- Multi-language Dependency Length Analysis (cross-lingual human datasets)
+- Multi-model-Surprisal analysis( GPT-2, DistilGPT-2, and
+GPT-2 Medium. )
+- Attention-based Structural Analysis (attention patterns on dependencies)
+- Random Baseline Comparison (randomized structure vs real text)
+- Visualization Experiments (DL distributions, surprisal trends, comparisons)
 ## Data Used
 
 | Category | Dataset / File | Language | Quantity (sentences) | Purpose |
