@@ -56,7 +56,63 @@
         color: var(--accent-color);
         background: #eff6ff;
     }
+@media (max-width: 768px) {
+    nav {
+        position: sticky;
+        top: 0;
+        padding: 0.4rem 0.5rem;
+        gap: 0.4rem;
+        justify-content: flex-start;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        white-space: nowrap;
+        scrollbar-width: none;
+    }
 
+    nav::-webkit-scrollbar {
+        display: none;
+    }
+
+    nav a {
+        font-size: 0.8rem;
+        padding: 0.35rem 0.65rem;
+        flex: 0 0 auto;
+    }
+
+    .hero {
+        padding: 2rem 1rem;
+    }
+
+    .hero h1 {
+        font-size: 1.7rem;
+    }
+
+    .hero p {
+        font-size: 0.95rem;
+    }
+
+    .hero h2 {
+        font-size: 1.1rem;
+    }
+
+    main {
+        padding: 1rem;
+    }
+
+    .grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .section {
+        scroll-margin-top: 60px;
+        margin-bottom: 3rem;
+    }
+
+    .card-content {
+        padding: 1rem;
+    }
+}
     .hero {
         background: #0f172a;
         color: white;
