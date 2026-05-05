@@ -306,11 +306,3 @@ All generated graphs, CSV files, and experiment results are stored in:
 ```
 
 ---
-
-##  Contributors
-
-* Muragesh Nyamagoud
-* Palak Meena
-* Kovid Saksham Lohia
-* Kajal Sankhla
-
